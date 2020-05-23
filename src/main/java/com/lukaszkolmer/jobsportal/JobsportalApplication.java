@@ -1,0 +1,13 @@
+package com.lukaszkolmer.jobsportal;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class JobsportalApplication {
+    //nowszy94@gmail.com
+    public static void main(String[] args) {
+        SpringApplication.run(JobsportalApplication.class, args);
+    }
+
+}
