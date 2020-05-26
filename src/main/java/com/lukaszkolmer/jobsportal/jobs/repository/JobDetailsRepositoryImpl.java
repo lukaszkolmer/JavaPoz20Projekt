@@ -9,6 +9,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+
 @Component
 @Data
 public class JobDetailsRepositoryImpl {
@@ -21,22 +22,23 @@ public class JobDetailsRepositoryImpl {
     }
 
     @EventListener(ApplicationReadyEvent.class)
-    public void setDatabase(){
-        JobDetails testJobDetails = new JobDetails("Test offer","Test descritpion","Test resposibilities","Test qualifications",
+    public void setDatabase() {
+        JobDetails testJobDetails = new JobDetails("Test offer", "Test descritpion", "Test resposibilities", "Test qualifications",
                 "Test benefits", "Test location",
-                "Test 0 - 9001 salary","Test vacancy", LocalDate.of(2000,1,1),"Test job nature");
+                "Test 0 - 9001 salary", "Test vacancy", LocalDate.of(2000, 1, 1), "Test job nature");
         jobDetailsRepository.save(testJobDetails);
     }
+
     public JobDetails findOfferById(Long id) {
         return jobDetailsRepository.findById(id).orElseThrow(() -> new NoOfferOfGivenID(id));
     }
 
-    public JobDetails addNewJobOffer(JobDetails jobOfferToAdd){
+    public JobDetails addNewJobOffer(JobDetails jobOfferToAdd) {
         jobDetailsRepository.save(jobOfferToAdd);
         return jobOfferToAdd;
     }
 
-    public JobDetails removeJobOffer(JobDetails offerToRemove){
+    public JobDetails removeJobOffer(JobDetails offerToRemove) {
         jobDetailsRepository.delete(offerToRemove);
         return offerToRemove;
     }
