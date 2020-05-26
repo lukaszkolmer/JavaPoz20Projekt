@@ -1,7 +1,8 @@
 package com.lukaszkolmer.jobsportal.jobs.controller;
 
 import com.lukaszkolmer.jobsportal.jobs.model.JobDetails;
-import com.lukaszkolmer.jobsportal.jobs.repository.JobOfferRepository;
+import com.lukaszkolmer.jobsportal.jobs.repository.JobDetailsRepositoryImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +11,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class JobsController {
 
+    @Autowired
+    JobDetailsRepositoryImpl jobDetailsRepository;
+
     @GetMapping({"/jobs","jobs.html"})
     public String getJobs(){
         return "jobs";
@@ -17,9 +21,8 @@ public class JobsController {
 
     @GetMapping("JobDetails.html") // inaczej nie działa, duże znaki w adresie?
     public String getJobsDetails(Model model, Long id){
-        JobOfferRepository repository = JobOfferRepository.getInstance();
-        id = 1L; //tymczasowe, zmienic pozniej na @param id
-        JobDetails jobDetails = repository.findOfferById(1L);
+
+        JobDetails jobDetails = jobDetailsRepository.findOfferById(1L);
         model.addAttribute("jobOffer",jobDetails);
 
         return "job_details";
