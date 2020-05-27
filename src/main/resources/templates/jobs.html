@@ -216,7 +216,7 @@
                             </div>
                         </div>
                     </div>
-                    <th:block th:each="jobOffer,jobDetails : ${jobDetailsRepository.findAll()}">
+                    <th:block th:each="JobDetails,JobDetailsState : ${jobDetailsRepository.findAll()}">
                     <div   class="job_lists m-0">
                         <div class="row">
                             <div class="col-lg-12 col-md-12">
@@ -226,7 +226,7 @@
                                             <img src="img/svg_icon/1.svg" alt="">
                                         </div>
                                         <div class="jobs_conetent">
-                                            <a href="JobDetails.html"><h4 th:text="${jobOffer}">Software Engineer</h4></a>
+                                            <a href="JobDetails.html"><h4 th:text="${JobDetails}">Software Engineer</h4></a>
                                             <div class="links_locat d-flex align-items-center">
                                                 <div class="location">
                                                     <p> <i class="fa fa-map-marker"></i> California, USA</p>
