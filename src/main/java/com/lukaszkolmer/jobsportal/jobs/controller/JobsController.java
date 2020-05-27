@@ -15,7 +15,11 @@ public class JobsController {
     JobDetailsRepositoryImpl jobDetailsRepository;
 
     @GetMapping({"/jobs","jobs.html"})
-    public String getJobs(){
+    public String getJobs(Model model){
+
+        model.addAttribute("jobDetailsRepository",jobDetailsRepository.getJobDetailsRepository());
+
+
         return "jobs";
     }
 
