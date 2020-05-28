@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.List;
+
 
 @Controller
 public class JobsController {
@@ -16,10 +18,8 @@ public class JobsController {
 
     @GetMapping({"/jobs","jobs.html"})
     public String getJobs(Model model){
-
-        model.addAttribute("jobDetailsRepository",jobDetailsRepository.getJobDetailsRepository());
-
-
+        List<JobDetails> listOfJobOffers = jobDetailsRepository.getJobDetailsRepository().findAll();
+        model.addAttribute("listOfJobOffers",listOfJobOffers);
         return "jobs";
     }
 

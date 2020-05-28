@@ -9,6 +9,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Component
 @Data
@@ -50,4 +51,5 @@ public class JobDetailsRepositoryImpl {
         jobDetailsRepository.delete(offerToRemove);
         return offerToRemove;
     }
+
 }
