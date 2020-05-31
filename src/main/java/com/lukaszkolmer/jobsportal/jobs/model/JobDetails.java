@@ -17,21 +17,21 @@ public class JobDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
-
+    public String category;
     public String title;
     public String description;
     public String responsibility;
     public String qualifications;
     public String benefits;
-
     public String location;
     public String salary;
     public String vacancy;
     public LocalDate publishDate;
     public String jobNature; // part-time/full-time etc
 
-    public JobDetails(String title, String description, String responsibility, String qualifications, String benefits,
+    public JobDetails(String category,String title, String description, String responsibility, String qualifications, String benefits,
                       String location, String salary, String vacancy, LocalDate publishDate, String jobNature) {
+        this.category = category;
         this.title = title;
         this.description = description;
         this.responsibility = responsibility;
