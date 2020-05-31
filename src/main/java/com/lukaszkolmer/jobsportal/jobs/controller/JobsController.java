@@ -27,7 +27,7 @@ public class JobsController {
     @GetMapping("JobDetails.html") // inaczej nie działa, duże znaki w adresie?
     public String getJobsDetails(Model model, @RequestParam Long id){
 
-        JobDetails jobDetails = jobDetailsRepository.findOfferById(id); // chwilowo działa jeszcze na sztywno podawanym id.
+        JobDetails jobDetails = jobDetailsRepository.findOfferById(id);
         model.addAttribute("jobOffer",jobDetails);
 
         return "job_details";
