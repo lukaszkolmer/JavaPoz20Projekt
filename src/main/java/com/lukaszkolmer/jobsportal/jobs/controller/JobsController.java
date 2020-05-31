@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -24,9 +25,9 @@ public class JobsController {
     }
 
     @GetMapping("JobDetails.html") // inaczej nie działa, duże znaki w adresie?
-    public String getJobsDetails(Model model, Long id){
+    public String getJobsDetails(Model model, @RequestParam Long id){
 
-        JobDetails jobDetails = jobDetailsRepository.findOfferById(1L); // chwilowo działa jeszcze na sztywno podawanym id.
+        JobDetails jobDetails = jobDetailsRepository.findOfferById(id); // chwilowo działa jeszcze na sztywno podawanym id.
         model.addAttribute("jobOffer",jobDetails);
 
         return "job_details";

@@ -217,7 +217,7 @@
                         </div>
                     </div>
                     <th:block th:each="JobDetails,JobDetailsState : ${listOfJobOffers}">
-                    <div   class="job_lists m-0">
+                    <div class="job_lists m-0">
                         <div class="row">
                             <div class="col-lg-12 col-md-12">
                                 <div class="single_jobs white-bg d-flex justify-content-between">
@@ -226,7 +226,7 @@
                                             <img src="img/svg_icon/1.svg" alt="">
                                         </div>
                                         <div class="jobs_conetent">
-                                            <a href="JobDetails.html"><h4 th:text="${JobDetails.getTitle()}">Offer title goes here</h4></a>
+                                            <a th:href="@{'/JobDetails.html?id=' + ${JobDetails.getId()}}" href="JobDetails.html" ><h4 th:text="${JobDetails.getTitle()}">Offer title goes here</h4></a>
                                             <div class="links_locat d-flex align-items-center">
                                                 <div class="location">
                                                     <p th:text="${JobDetails.getLocation()}"> <i class="fa fa-map-marker"></i> Location goes here</p>

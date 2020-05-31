@@ -261,7 +261,7 @@
                                     <img src="img/svg_icon/1.svg" alt="">
                                 </div>
                                 <div class="jobs_conetent">
-                                    <a href="JobDetails.html"><h4  th:text="${JobDetails.getTitle()}">Title goes here</h4></a>
+                                    <a th:href="@{'/JobDetails.html?id=' + ${JobDetails.getId()}}"  href="JobDetails.html"><h4  th:text="${JobDetails.getTitle()}">Title goes here</h4></a>
                                     <div class="links_locat d-flex align-items-center">
                                         <div class="location">
                                             <p th:text="${JobDetails.getLocation()}"> <i class="fa fa-map-marker"></i>Location goes here</p>
@@ -456,7 +456,7 @@
         </div>
     </div>
 
-    <!-- job_searcing_wrap  -->
+    <!-- job_searching_wrap  -->
     <div class="job_searcing_wrap overlay">
         <div class="container">
             <div class="row">
