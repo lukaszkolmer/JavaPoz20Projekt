@@ -1,6 +1,6 @@
 package com.lukaszkolmer.jobsportal.jobs.repository;
 
-import com.lukaszkolmer.jobsportal.jobs.Exceptions.NoOfferOfGivenID;
+import com.lukaszkolmer.jobsportal.jobs.exceptions.NoOfferOfGivenID;
 import com.lukaszkolmer.jobsportal.jobs.model.JobDetails;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;

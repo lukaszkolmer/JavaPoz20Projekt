@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All messages</title>
+</head>
+<body>
+<th:block th:each="userMessage,userMessageState : ${messageList}">
+<p>messages should be under </p>
+
+<p th:text="${userMessage.getMessage()} + 'by' + ${userMessage.getUserName()}"></p>
+
+</th:block>
+</body>
+</html>
