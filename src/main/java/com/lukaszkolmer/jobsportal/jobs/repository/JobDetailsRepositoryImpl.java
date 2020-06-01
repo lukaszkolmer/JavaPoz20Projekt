@@ -9,9 +9,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component
@@ -27,13 +25,13 @@ public class JobDetailsRepositoryImpl {
 
     @EventListener(ApplicationReadyEvent.class)
     public void setDatabase() {
-        JobDetails testJobDetails = new JobDetails("IT","Test offer", "Test descritpion", "Test resposibilities", "Test qualifications",
+        JobDetails testJobDetails = new JobDetails("IT", "Test offer", "Test descritpion", "Test resposibilities", "Test qualifications",
                 "Test benefits", "Test location",
                 "Test 0 - 9001 salary", "Test vacancy", LocalDate.of(2000, 1, 1), "Test job nature");
-        JobDetails testJobDetails2 = new JobDetails("Administration","Test2 offer", "Test2 descritpion", "Test2 resposibilities", "Test2 qualifications",
+        JobDetails testJobDetails2 = new JobDetails("Administration", "Test2 offer", "Test2 descritpion", "Test2 resposibilities", "Test2 qualifications",
                 "Test2 benefits", "Test2 location",
                 "Test2 0 - 9001 salary", "Test2 vacancy", LocalDate.of(1995, 11, 11), "Test2 job nature");
-        JobDetails testJobDetails3 = new JobDetails("Teaching","Test3 offer", "Test3 descritpion", "Test3 resposibilities", "Test3 qualifications",
+        JobDetails testJobDetails3 = new JobDetails("Teaching", "Test3 offer", "Test3 descritpion", "Test3 resposibilities", "Test3 qualifications",
                 "Test3 benefits", "Test3 location",
                 "Test3 0 - 9001 salary", "Test3 vacancy", LocalDate.of(1889, 12, 31), "Test3 job nature");
         jobDetailsRepository.save(testJobDetails);
@@ -45,21 +43,22 @@ public class JobDetailsRepositoryImpl {
         return jobDetailsRepository.findById(id).orElseThrow(() -> new NoOfferOfGivenID(id));
     }
 
-    public List<JobDetails> findOffersByCategory(String category){
+    public List<JobDetails> findOffersByCategory(String category) {
         return jobDetailsRepository.findAll().stream().filter(jobDetails -> jobDetails.category.equals(category)).collect(Collectors.toList());
     }
 
-    public List<JobDetails> findOffersByLocation(String location){
+    public List<JobDetails> findOffersByLocation(String location) {
         return jobDetailsRepository.findAll().stream().filter(jobDetails -> jobDetails.location.equals(location)).collect(Collectors.toList());
     }
 
-    public List<JobDetails> findOffersByJobNature(String jobNature){
+    public List<JobDetails> findOffersByJobNature(String jobNature) {
         return jobDetailsRepository.findAll().stream().filter(jobDetails -> jobDetails.jobNature.equals(jobNature)).collect(Collectors.toList());
     }
 
-    public List<JobDetails> findOffersByQualification(String qualification){
+    public List<JobDetails> findOffersByQualification(String qualification) {
         return jobDetailsRepository.findAll().stream().filter(jobDetails -> jobDetails.qualifications.equals(qualification)).collect(Collectors.toList());
     }
+
     public JobDetails addNewJobOffer(JobDetails jobOfferToAdd) {
         jobDetailsRepository.save(jobOfferToAdd);
         return jobOfferToAdd;
