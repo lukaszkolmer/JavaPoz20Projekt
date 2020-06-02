@@ -5,8 +5,9 @@
     <title>All messages</title>
 </head>
 <body>
-<th:block th:each="userMessage,userMessageState : ${messageList}">
 <p>messages should be under </p>
+<th:block th:each="userMessage,userMessageState : ${messageList}">
+
 
 <p th:text="${userMessage.getMessage()} + 'by' + ${userMessage.getUserName()}"></p>
 

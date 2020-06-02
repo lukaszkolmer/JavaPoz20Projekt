@@ -5,10 +5,15 @@ import com.lukaszkolmer.jobsportal.contact.model.UserMessage;
 import com.lukaszkolmer.jobsportal.contact.repository.UserMessageRepositoryImpl;
 import com.lukaszkolmer.jobsportal.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -22,6 +27,7 @@ public class ContactController {
     public String getContact(Model model){
         CompanyInfo companyInfo = CompanyInfo.getInstance();
         model.addAttribute("CompanyInfo",companyInfo);
+        model.addAttribute("userMessage",new UserMessage());
         return "contact";
     }
 
@@ -32,16 +38,10 @@ public class ContactController {
         return "contactmessage";
     }
 
-    @PostMapping({"/contact","/contact.html"})
-    public UserMessage addNewMessage(HttpServletRequest request){
-        //NOT WORKING :(
-        String name = request.getParameter("name");
-        String subject = request.getParameter("subject");
-        String message = request.getParameter("message");
-        String email = request.getParameter("email");
-        UserMessage userMessage = new UserMessage(name,email,subject,message);
+    @PostMapping("/contact/newmessage")
+    public String addNewUserMessage(UserMessage userMessage){
         userMessageRepositoryImpl.addNewUserMessage(userMessage);
-        System.out.println("added new massage");
-        return userMessage;
+        return "messagesentsuccess";
+
     }
 }
