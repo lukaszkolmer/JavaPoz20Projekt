@@ -38,9 +38,9 @@ public class ContactController {
         return "contactmessage";
     }
 
-    @PostMapping("/contact/newmessage")
-    public String addNewUserMessage(UserMessage userMessage){
-        userMessageRepositoryImpl.addNewUserMessage(userMessage);
+    @PostMapping("/contact/addmsg")
+    public String addNewUserMessage(@ModelAttribute(name = "userMessage") UserMessage userMessage){
+       userMessageRepositoryImpl.addNewUserMessage(userMessage);
         return "messagesentsuccess";
 
     }
