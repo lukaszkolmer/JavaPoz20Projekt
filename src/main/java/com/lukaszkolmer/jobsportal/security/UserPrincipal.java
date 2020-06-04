@@ -1,20 +1,17 @@
 package com.lukaszkolmer.jobsportal.security;
 
 import com.lukaszkolmer.jobsportal.user.model.User;
-import com.lukaszkolmer.jobsportal.user.repository.UserRepositoryImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public class UserPrincipal implements UserDetails {
 
-   private User user;
+    private User user;
 
     public UserPrincipal(User user) {
         this.user = user;
