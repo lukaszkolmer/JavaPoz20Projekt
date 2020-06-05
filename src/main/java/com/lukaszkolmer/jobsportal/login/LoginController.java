@@ -23,8 +23,9 @@ public class LoginController {
         return "logoutsuccess";
     }
 
-    @RequestMapping(value = "/login",method = RequestMethod.POST)
-    public String addNewUserMessage(@ModelAttribute(name = "user") User user){
-        return "loginsuccess";
-    }
+    //@RequestMapping(value = "/login",method = RequestMethod.POST)
+    //public String addNewUserMessage(@ModelAttribute(name = "user") User user){
+      //  return
+       //         "loginsuccess";
+    //}
 }

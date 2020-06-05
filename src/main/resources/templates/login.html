@@ -1,18 +1,24 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Log in</title>
-</head>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head></head>
 <body>
-<H1>Log in</H1>
+<h1>Login</h1>
+<form name='f' action="login" method='POST'>
+    <table>
+        <tr>
+            <td>User:</td>
+            <td><input type='text' name='username' value=''></td>
+        </tr>
+        <tr>
+            <td>Password:</td>
+            <td><input type='password' name='password' /></td>
+        </tr>
+        <tr>
+            <td><input name="submit" type="submit" value="submit" /></td>
+        </tr>
 
-<form action="/login" th:action="@{/login/}" th:object="${user}" method="post" >
-    <label for="login">Login</label><br>
-    <input type="text" th:field="*{username}" name="login" id="login" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter login'"><br>
-    <label for="password">Password</label><br>
-    <input type="text" th:field="*{password}" name="password" id="password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter password'"><br><br>
-<input type="submit" value="log in">
+    </table>
+    <br>
+    <a href="/" ><button>Home Page</button></a><br>
 </form>
 </body>
 </html>
