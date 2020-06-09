@@ -1,31 +1,28 @@
 package com.lukaszkolmer.jobsportal.login;
 
 import com.lukaszkolmer.jobsportal.user.model.User;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class LoginController {
 
     @GetMapping("/login")
-    public String getLoginPage(Model model){
+    public String getLoginPage(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         model.addAttribute("user", new User());
-        return "login";
+        if (!(auth instanceof AnonymousAuthenticationToken)) {
+            return ("redirect:/profile");
+        } else return "login";
     }
 
     @GetMapping("/logoutsuccess")
-    public String getLogoutSuccessPage(){
+    public String getLogoutSuccessPage() {
 
         return "logoutsuccess";
     }
-
-    //@RequestMapping(value = "/login",method = RequestMethod.POST)
-    //public String addNewUserMessage(@ModelAttribute(name = "user") User user){
-      //  return
-       //         "loginsuccess";
-    //}
 }
