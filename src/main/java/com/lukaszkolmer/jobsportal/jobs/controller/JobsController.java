@@ -1,13 +1,20 @@
 package com.lukaszkolmer.jobsportal.jobs.controller;
 
+import com.lukaszkolmer.jobsportal.contact.model.UserMessage;
 import com.lukaszkolmer.jobsportal.jobs.model.JobDetails;
 import com.lukaszkolmer.jobsportal.jobs.repository.JobDetailsRepositoryImpl;
+import com.lukaszkolmer.jobsportal.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 
@@ -16,6 +23,8 @@ public class JobsController {
 
     @Autowired
     JobDetailsRepositoryImpl jobDetailsRepository;
+    @Autowired
+    UserDetailsService userDetailsService;
 
     @GetMapping({"/jobs","jobs.html"})
     public String getJobs(Model model){
@@ -31,5 +40,26 @@ public class JobsController {
         model.addAttribute("jobOffer",jobDetails);
 
         return "job_details";
+    }
+
+    @GetMapping("/jobs/addnew")
+    public String getAddNewJobOffer(Model model){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = userDetailsService.loadUserByUsername(auth.getName());
+        model.addAttribute("jobDetails",new JobDetails());
+        model.addAttribute("userDetails",userDetails);
+        model.addAttribute("currentDate",new Date());
+        return "addjoboffer";
+    }
+
+    @RequestMapping(value = "/jobs/addnew", method = RequestMethod.POST)
+    public String addNewUserMessage(@ModelAttribute(name = "jobDetails") JobDetails jobDetails) {
+        jobDetailsRepository.addNewJobOffer(jobDetails);
+        return "jobofferadded";
+    }
+
+    @GetMapping("/jobs/jobofferadded")
+    public String getJobOfferAddedPage(){
+        return "jobofferadded";
     }
 }

@@ -9,8 +9,10 @@
 <th:block th:each="userMessage,userMessageState : ${messageList}">
 
 
-<p th:text="${userMessage.getMessage()} + 'by' + ${userMessage.getUserName()}"></p>
+<p th:text="${userMessage.getMessage()} + '  by  ' + ${userMessage.getUserName()}"></p>
 
 </th:block>
+<br>
+<a href="/" ><button>Home Page</button></a><br>
 </body>
 </html>

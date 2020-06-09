@@ -146,23 +146,11 @@
                         </div>
                         <div class="single_wrap">
                             <h4>Responsibility</h4>
-                            <ul>
-                                <li>The applicants should have experience in the following areas.
-                                </li>
-                                <li >Have sound knowledge of commercial activities.</li>
-                                <li>Leadership, analytical, and problem-solving abilities.</li>
-                                <li>Should have vast knowledge in IAS/ IFRS, Company Act, Income Tax, VAT.</li>
-                            </ul>
+                            <p th:text="${jobOffer.getResponsibility()}"> responsibilities go here</p>
                         </div>
                         <div class="single_wrap">
                             <h4>Qualifications</h4>
-                            <ul>
-                                <li>The applicants should have experience in the following areas.
-                                </li>
-                                <li>Have sound knowledge of commercial activities.</li>
-                                <li>Leadership, analytical, and problem-solving abilities.</li>
-                                <li>Should have vast knowledge in IAS/ IFRS, Company Act, Income Tax, VAT.</li>
-                            </ul>
+                            <p th:text="${jobOffer.getQualifications()}"> qualifications go here</p>
                         </div>
                         <div class="single_wrap">
                             <h4>Benefits</h4>
@@ -221,6 +209,7 @@
                         </div>
                         <div class="job_content">
                             <ul>
+                                <li>Published by: <span th:text="${jobOffer.getOwner()}"> owner goes here </span></li>
                                 <li>Published on: <span th:text="${jobOffer.getPublishDate()}"> publish date goes here </span></li>
                                 <li>Vacancy: <span th:text="${jobOffer.getVacancy()}">Vacancy goes here</span></li>
                                 <li>Salary: <span th:text="${jobOffer.getSalary()}">salary goes here</span></li>

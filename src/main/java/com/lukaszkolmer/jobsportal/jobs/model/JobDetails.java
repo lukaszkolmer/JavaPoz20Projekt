@@ -14,6 +14,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Entity
 public class JobDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
@@ -28,9 +29,10 @@ public class JobDetails {
     public String vacancy;
     public LocalDate publishDate;
     public String jobNature; // part-time/full-time etc
+    public String owner;
 
-    public JobDetails(String category,String title, String description, String responsibility, String qualifications, String benefits,
-                      String location, String salary, String vacancy, LocalDate publishDate, String jobNature) {
+    public JobDetails(String category, String title, String description, String responsibility, String qualifications, String benefits,
+                      String location, String salary, String vacancy, LocalDate publishDate, String jobNature,String owner) {
         this.category = category;
         this.title = title;
         this.description = description;
@@ -42,7 +44,8 @@ public class JobDetails {
         this.vacancy = vacancy;
         this.publishDate = publishDate;
         this.jobNature = jobNature;
+        this.owner = owner;
     }
-    // public Owner owner;
+
     // public Image image; ???
 }
