@@ -6,12 +6,24 @@
     <title>Your job offers</title>
 </head>
 <body>
-<h1>Your job offers: </h1><br>
+<h1>Your active job offers: </h1><br>
 <th:block th:each="JobDetails,JobDetailsState : ${listOfJobOffers}">
+    <span th:if="${JobDetails.isActive == true}">
     <a th:href="@{'/JobDetails.html?id=' + ${JobDetails.getId()}}"
        href="JobDetails.html" ><h4 th:text="${JobDetails.getTitle() + ' posted on ' + JobDetails.publishDate}">Offer title goes here</h4></a><br>
+    <a th:href="@{/jobs/deactivate/{id}(id=${JobDetails.id})}" th:method="GET"><button>Deactivate</button></a><br>
+    </span>
 </th:block>
-<br>
+<br><br><br>
+<h2>You finished offers:</h2>
+<th:block th:each="JobDetails,JobDetailsState : ${listOfJobOffers}">
+    <span th:if="${JobDetails.isActive == false}">
+    <a th:href="@{'/JobDetails.html?id=' + ${JobDetails.getId()}}"
+       href="JobDetails.html" ><h4 th:text="${JobDetails.getTitle() + ' posted on ' + JobDetails.publishDate}">Offer title goes here</h4></a><br>
+    </span>
+</th:block>
+
+<a href="/profile" ><button>Back to profile</button></a><br>
 <a href="/" ><button>Home Page</button></a><br>
 </body>
 </html>

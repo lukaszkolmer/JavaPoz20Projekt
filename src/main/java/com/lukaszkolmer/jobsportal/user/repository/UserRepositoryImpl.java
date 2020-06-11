@@ -26,7 +26,9 @@ public class UserRepositoryImpl {
     @EventListener(ApplicationReadyEvent.class)
     public void setDatabase() {
         User admin = new User("admin@admin.com","admin","admin","ADMIN");
+        User user = new User("user@user.com","user","user","USER");
         userRepository.save(admin);
+        userRepository.save(user);
     }
 
     public User findUserById(Long id) {

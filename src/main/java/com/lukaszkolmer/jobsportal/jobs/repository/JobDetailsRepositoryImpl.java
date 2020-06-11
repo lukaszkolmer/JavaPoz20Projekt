@@ -78,6 +78,18 @@ public class JobDetailsRepositoryImpl {
         jobDetailsRepository.save(jobOfferToAdd);
         return jobOfferToAdd;
     }
+    public JobDetails deactivateJobOffer(Long id) {
+        JobDetails jobToDeactivate = jobDetailsRepository.getOne(id);
+        jobToDeactivate.isActive = false;
+        jobDetailsRepository.save(jobToDeactivate);
+        return jobToDeactivate;
+    }
+    public JobDetails activateJobOffer(Long id) {
+        JobDetails jobToActivate = jobDetailsRepository.getOne(id);
+        jobToActivate.isActive = true;
+        jobDetailsRepository.save(jobToActivate);
+        return jobToActivate;
+    }
 
     public JobDetails removeJobOffer(JobDetails offerToRemove) {
         jobDetailsRepository.delete(offerToRemove);

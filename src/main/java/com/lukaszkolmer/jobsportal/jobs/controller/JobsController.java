@@ -1,9 +1,8 @@
 package com.lukaszkolmer.jobsportal.jobs.controller;
 
-import com.lukaszkolmer.jobsportal.contact.model.UserMessage;
+import com.lukaszkolmer.jobsportal.jobs.exceptions.NoOfferOfGivenID;
 import com.lukaszkolmer.jobsportal.jobs.model.JobDetails;
 import com.lukaszkolmer.jobsportal.jobs.repository.JobDetailsRepositoryImpl;
-import com.lukaszkolmer.jobsportal.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,7 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 
@@ -26,30 +24,30 @@ public class JobsController {
     @Autowired
     UserDetailsService userDetailsService;
 
-    @GetMapping({"/jobs","jobs.html"})
-    public String getJobs(Model model){
+    @GetMapping({"/jobs", "jobs.html"})
+    public String getJobs(Model model) {
         List<JobDetails> listOfJobOffers = jobDetailsRepository.getJobDetailsRepository().findAll();
-        model.addAttribute("listOfJobOffers",listOfJobOffers);
+        model.addAttribute("listOfJobOffers", listOfJobOffers);
         return "jobs";
     }
 
     @GetMapping("JobDetails.html") // inaczej nie działa, duże znaki w adresie?
-    public String getJobsDetails(Model model, @RequestParam Long id){
+    public String getJobsDetails(Model model, @RequestParam Long id) {
 
         JobDetails jobDetails = jobDetailsRepository.findOfferById(id);
-        model.addAttribute("jobOffer",jobDetails);
+        model.addAttribute("jobOffer", jobDetails);
 
         return "job_details";
     }
 
     @GetMapping("/jobs/addnew")
-    public String getAddNewJobOffer(Model model){
+    public String getAddNewJobOffer(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails = userDetailsService.loadUserByUsername(auth.getName());
         LocalDate currentDate = LocalDate.now();
-        model.addAttribute("jobDetails",new JobDetails());
-        model.addAttribute("userDetails",userDetails);
-        model.addAttribute("currentDate",currentDate);
+        model.addAttribute("jobDetails", new JobDetails());
+        model.addAttribute("userDetails", userDetails);
+        model.addAttribute("currentDate", currentDate);
         return "addjoboffer";
     }
 
@@ -58,10 +56,10 @@ public class JobsController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails = userDetailsService.loadUserByUsername(auth.getName());
         LocalDate currentDate = LocalDate.now();
-        if (jobDetails.getOwner().isEmpty()){
+        if (jobDetails.getOwner().isEmpty()) {
             jobDetails.setOwner(userDetails.getUsername());
         }
-        if (jobDetails.getPublishDate()==null){
+        if (jobDetails.getPublishDate() == null) {
             jobDetails.setPublishDate(currentDate);
         }
         jobDetailsRepository.addNewJobOffer(jobDetails);
@@ -69,8 +67,22 @@ public class JobsController {
         return "jobofferadded";
     }
 
+    @RequestMapping(path = "/jobs/deactivate/{id}", method = RequestMethod.GET)
+    public String deactivateJobOffer(@PathVariable("id") Long id) throws NoOfferOfGivenID {
+        JobDetails jobDetails = jobDetailsRepository.findOfferById(id);
+        jobDetailsRepository.deactivateJobOffer(id);
+        System.out.println("deactivated: " + jobDetails.getId());
+        if (jobDetails.isActive){
+            System.out.println("still active lol");
+        }
+        else {
+            System.out.println("not active pog");
+        }
+        return "redirect:/profile/joboffers";
+    }
+
     @GetMapping("/jobs/jobofferadded")
-    public String getJobOfferAddedPage(){
+    public String getJobOfferAddedPage() {
         return "jobofferadded";
     }
 }
