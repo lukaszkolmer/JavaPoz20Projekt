@@ -30,6 +30,7 @@ public class JobDetails {
     public LocalDate publishDate;
     public String jobNature; // part-time/full-time etc
     public String owner;
+    public boolean isActive = true;
 
     public JobDetails(String category, String title, String description, String responsibility, String qualifications, String benefits,
                       String location, String salary, String vacancy, LocalDate publishDate, String jobNature,String owner) {
