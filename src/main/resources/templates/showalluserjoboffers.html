@@ -1,0 +1,17 @@
+<!DOCTYPE html >
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Your job offers</title>
+</head>
+<body>
+<h1>Your job offers: </h1><br>
+<th:block th:each="JobDetails,JobDetailsState : ${listOfJobOffers}">
+    <a th:href="@{'/JobDetails.html?id=' + ${JobDetails.getId()}}"
+       href="JobDetails.html" ><h4 th:text="${JobDetails.getTitle() + ' posted on ' + JobDetails.publishDate}">Offer title goes here</h4></a><br>
+</th:block>
+<br>
+<a href="/" ><button>Home Page</button></a><br>
+</body>
+</html>

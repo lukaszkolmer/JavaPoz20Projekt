@@ -6,7 +6,9 @@
 </head>
 <body>
 <h1>This is user profile page, very nice.</h1>
-<p th:text="${userDetails.username}" >username:</p>
+<p th:text="${'Username: ' + userDetails.username}">username:</p>
+<p th:text="${'Password: ' + userDetails.password}">password:</p>
+<p th:text="${'Email: ' + user.getEmail()}">email:</p>
 <br>
 <br>
 <a href="/" ><button>Home Page</button></a><br>

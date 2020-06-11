@@ -49,6 +49,9 @@ public class JobDetailsRepositoryImpl {
     public List<JobDetails> findOffersByCategory(String category) {
         return jobDetailsRepository.findAll().stream().filter(jobDetails -> jobDetails.category.equals(category)).collect(Collectors.toList());
     }
+    public List<JobDetails> findOffersByOwner(String owner) {
+        return jobDetailsRepository.findAll().stream().filter(jobDetails -> jobDetails.owner.equals(owner)).collect(Collectors.toList());
+    }
 
     public List<JobDetails> findOffersByLocation(String location) {
         return jobDetailsRepository.findAll().stream().filter(jobDetails -> jobDetails.location.equals(location)).collect(Collectors.toList());

@@ -65,7 +65,7 @@ public class JobsController {
             jobDetails.setPublishDate(currentDate);
         }
         jobDetailsRepository.addNewJobOffer(jobDetails);
-        System.out.println(jobDetails);
+
         return "jobofferadded";
     }
 
