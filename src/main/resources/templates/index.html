@@ -257,6 +257,7 @@
                 </div>
             </div>
             <th:block th:each="JobDetails,JobDetailsState : ${listOfJobOffers}">
+                <span th:if="${JobDetails.isActive == true}">
             <div class="job_lists">
                 <div class="row">
                     <div class="col-lg-12 col-md-12">
@@ -290,6 +291,7 @@
                     </div>
                 </div>
             </div>
+                </span>
             </th:block>
         </div>
     </div>
