@@ -46,15 +46,26 @@ public class JobsController {
     public String getAddNewJobOffer(Model model){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails = userDetailsService.loadUserByUsername(auth.getName());
+        LocalDate currentDate = LocalDate.now();
         model.addAttribute("jobDetails",new JobDetails());
         model.addAttribute("userDetails",userDetails);
-        model.addAttribute("currentDate",new Date());
+        model.addAttribute("currentDate",currentDate);
         return "addjoboffer";
     }
 
     @RequestMapping(value = "/jobs/addnew", method = RequestMethod.POST)
     public String addNewUserMessage(@ModelAttribute(name = "jobDetails") JobDetails jobDetails) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = userDetailsService.loadUserByUsername(auth.getName());
+        LocalDate currentDate = LocalDate.now();
+        if (jobDetails.getOwner().isEmpty()){
+            jobDetails.setOwner(userDetails.getUsername());
+        }
+        if (jobDetails.getPublishDate()==null){
+            jobDetails.setPublishDate(currentDate);
+        }
         jobDetailsRepository.addNewJobOffer(jobDetails);
+        System.out.println(jobDetails);
         return "jobofferadded";
     }
 

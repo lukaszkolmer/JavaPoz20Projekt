@@ -8,8 +8,8 @@
 </head>
 <body>
 <form action="#" th:action="@{/jobs/addnew/}" th:object="${jobDetails}" method="post">
-    <input type="hidden" id="owner" name="owner" th:field="${jobDetails.owner}">
-    <input type="hidden" id="publishDate" name="publishDate" th:field="${jobDetails.publishDate}" th:value="${currentDate.toString()}">
+    <input type="text" id="owner" name="owner" th:field="${jobDetails.owner}" th:value="${userDetails.username}" value="username" style="display:none;">
+    <input type="text" id="publishDate" name="publishDate" th:field="${jobDetails.publishDate}" th:value="${currentDate}" value="date" style="display:none;">
     <fieldset>
         <!-- Form Name -->
         <legend>Add new job offer</legend>
@@ -107,13 +107,14 @@
             <label class="col-md-4 control-label" for="submitButton"></label>
             <div class="col-md-8">
                 <button type="submit" id="submitButton" name="submitButton" class="btn btn-success">Submit</button>
-                <button type="reset"  id="cancelButton" name="cancelButton" class="btn btn-danger">Cancel</button>
+                <button type="reset"  id="cancelButton" name="cancelButton" class="btn btn-danger">Clear</button>
             </div>
         </div>
 
     </fieldset>
 </form>
-
+<br><br>
+<a href="/" ><button>Home Page</button></a><br>
 
 </body>
 </html>
