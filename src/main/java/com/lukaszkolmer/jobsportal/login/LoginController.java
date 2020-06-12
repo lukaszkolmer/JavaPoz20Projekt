@@ -21,7 +21,7 @@ public class LoginController {
     }
 
     @GetMapping("/logoutsuccess")
-    public String getLogoutSuccessPage() {
+    public String getLogoutSuccessPage(Model model) {
 
         return "logoutsuccess";
     }

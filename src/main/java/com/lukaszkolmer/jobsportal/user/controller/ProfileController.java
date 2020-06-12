@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -44,10 +45,33 @@ public class ProfileController {
         return "changepassword";
     }
 
+    @PostMapping("/profile/changepassword")
+    public String postChangePassword(@RequestParam String currentPassword,@RequestParam String newPassword,Model model,RedirectAttributes redirectAttributes){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User userToChange =  userRepository.findByUsername(auth.getName());
+        if (userToChange.getPassword().equals(currentPassword)) {
+            userRepository.changeUserPassword(userToChange.getId(), newPassword);
+            return "redirect:/profile/changepasswordsuccess";
+        }
+        else {
+            redirectAttributes.addAttribute("message","Incorrect current password.");
+            return "redirect:/profile/changepasswordfail";
+        }
+    }
+    @GetMapping("/profile/changepasswordsuccess")
+    public String getChangePasswordSuccessPage(Model model){
+        return "changepasswordsuccess";
+    }
+    @GetMapping("/profile/changepasswordfail")
+    public String getChangePasswordFailPage(Model model){
+        return "changepasswordfail";
+    }
+
     @GetMapping("/profile/changeemail")
     public String getChangeEmailPage(Model model){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         model.addAttribute("user", userRepository.findByUsername(auth.getName()));
+
         return "changeemail";
     }
     @PostMapping("/profile/changeemail")
