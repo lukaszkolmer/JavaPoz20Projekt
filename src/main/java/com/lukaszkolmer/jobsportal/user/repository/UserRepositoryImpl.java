@@ -1,7 +1,5 @@
 package com.lukaszkolmer.jobsportal.user.repository;
 
-import com.lukaszkolmer.jobsportal.jobs.exceptions.NoOfferOfGivenID;
-import com.lukaszkolmer.jobsportal.jobs.model.JobDetails;
 import com.lukaszkolmer.jobsportal.user.exceptions.NoUserOfGivenID;
 import com.lukaszkolmer.jobsportal.user.model.User;
 import lombok.Data;
@@ -9,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDate;
 
 @Component
 @Data
@@ -25,8 +21,8 @@ public class UserRepositoryImpl {
 
     @EventListener(ApplicationReadyEvent.class)
     public void setDatabase() {
-        User admin = new User("admin@admin.com","admin","admin","ADMIN");
-        User user = new User("user@user.com","user","user","USER");
+        User admin = new User("admin@admin.com", "admin", "admin", "ADMIN");
+        User user = new User("user@user.com", "user", "user", "USER");
         userRepository.save(admin);
         userRepository.save(user);
     }
@@ -45,23 +41,19 @@ public class UserRepositoryImpl {
         return userToRemove;
     }
 
-    public User findByUsername(String username){
+    public User findByUsername(String username) {
         return userRepository.findAll().stream()
                 .filter(user -> user.username.equals(username))
                 .findAny()
                 .orElse(null);
     }
 
-
-
-
-
-
-
-
-
-
-
+    public User changeUserEmail(Long id, String newEmail) {
+        User user = userRepository.getOne(id);
+        user.setEmail(newEmail);
+        userRepository.save(user);
+        return user;
+    }
 
 
 }

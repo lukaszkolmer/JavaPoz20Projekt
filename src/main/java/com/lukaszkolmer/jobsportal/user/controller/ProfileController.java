@@ -13,6 +13,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -34,6 +36,28 @@ public class ProfileController {
         model.addAttribute("userDetails",userDetails);
         return "profile";
     }
+
+    @GetMapping("/profile/changepassword")
+    public String getChangePasswordPage(Model model){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("user", userRepository.findByUsername(auth.getName()));
+        return "changepassword";
+    }
+
+    @GetMapping("/profile/changeemail")
+    public String getChangeEmailPage(Model model){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("user", userRepository.findByUsername(auth.getName()));
+        return "changeemail";
+    }
+    @PostMapping("/profile/changeemail")
+    public String postChangeEmail(@RequestParam String newEmail){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User userToChange =  userRepository.findByUsername(auth.getName());
+        userRepository.changeUserEmail(userToChange.getId(),newEmail);
+        return "redirect:/logout";
+    }
+
 
     @GetMapping("/profile/joboffers")
     public String getPostedJobOffersPage(Model model){

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Change email</title>
+</head>
+<body>
+<h1>Change email.</h1>
+
+    <form  th:action="@{/profile/changeemail/}" method='POST'>
+        <table>
+            <tr>
+                <td>Current email:</td>
+                <td><p th:text="${user.getEmail()}">email</p></td>
+            </tr>
+            <tr>
+                <td>New email</td>
+                <td><input type='email' name='newEmail' /></td>
+            </tr>
+            <tr>
+                <td><input name="submit" type="submit" value="submit" /></td>
+            </tr>
+
+        </table>
+        <br>
+    </form>
+<br><br>
+<a href="/profile" ><button>Back to profile</button></a><br>
+</body>
+</html>
