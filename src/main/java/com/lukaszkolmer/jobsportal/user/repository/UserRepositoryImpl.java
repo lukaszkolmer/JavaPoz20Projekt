@@ -55,5 +55,10 @@ public class UserRepositoryImpl {
         return user;
     }
 
-
+    public User changeUserPassword(Long id, String newPassword) {
+        User user = userRepository.getOne(id);
+        user.setPassword(newPassword);
+        userRepository.save(user);
+        return user;
+    }
 }
