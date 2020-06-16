@@ -48,6 +48,13 @@ public class UserRepositoryImpl {
                 .orElse(null);
     }
 
+    public User findByEmail(String email) {
+        return userRepository.findAll().stream()
+                .filter(user -> user.email.equals(email))
+                .findAny()
+                .orElse(null);
+    }
+
     public User changeUserEmail(Long id, String newEmail) {
         User user = userRepository.getOne(id);
         user.setEmail(newEmail);
@@ -61,4 +68,19 @@ public class UserRepositoryImpl {
         userRepository.save(user);
         return user;
     }
+    public boolean checkIfUserOfGivenUsernameAlreadyExist(User user){
+        if (findByUsername(user.getUsername())== null) {
+            return false;
+        }
+        else
+        {return true;}
+    }
+    public boolean checkIfUserOfGivenEmailAlreadyExist(User user){
+        if (findByEmail(user.getEmail())== null) {
+            return false;
+        }
+        else
+        {return true;}
+    }
+
 }

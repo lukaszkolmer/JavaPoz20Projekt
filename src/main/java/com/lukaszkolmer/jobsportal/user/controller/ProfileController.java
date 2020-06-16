@@ -3,7 +3,6 @@ package com.lukaszkolmer.jobsportal.user.controller;
 import com.lukaszkolmer.jobsportal.jobs.model.JobDetails;
 import com.lukaszkolmer.jobsportal.jobs.repository.JobDetailsRepositoryImpl;
 import com.lukaszkolmer.jobsportal.security.UserDetailsService;
-import com.lukaszkolmer.jobsportal.security.UserPrincipal;
 import com.lukaszkolmer.jobsportal.user.model.User;
 import com.lukaszkolmer.jobsportal.user.repository.UserRepositoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,81 +30,95 @@ public class ProfileController {
     JobDetailsRepositoryImpl jobDetailsRepository;
 
     @GetMapping("/profile")
-    public String getProfileSettings(Model model){
+    public String getProfileSettings(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails = userDetailsService.loadUserByUsername(auth.getName());
-        model.addAttribute("user", userRepository.findByUsername(auth.getName()) );
-        model.addAttribute("userDetails",userDetails);
+        model.addAttribute("user", userRepository.findByUsername(auth.getName()));
+        model.addAttribute("userDetails", userDetails);
         return "profile";
     }
 
     @GetMapping("/profile/changepassword")
-    public String getChangePasswordPage(Model model){
+    public String getChangePasswordPage(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         model.addAttribute("user", userRepository.findByUsername(auth.getName()));
         return "changepassword";
     }
 
     @PostMapping("/profile/changepassword")
-    public String postChangePassword(@RequestParam String currentPassword,@RequestParam String newPassword,Model model,RedirectAttributes redirectAttributes){
+    public String postChangePassword(@RequestParam String currentPassword, @RequestParam String newPassword, Model model, RedirectAttributes redirectAttributes) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User userToChange =  userRepository.findByUsername(auth.getName());
+        User userToChange = userRepository.findByUsername(auth.getName());
         if (userToChange.getPassword().equals(currentPassword)) {
             userRepository.changeUserPassword(userToChange.getId(), newPassword);
             return "redirect:/profile/changepasswordsuccess";
-        }
-        else {
-            redirectAttributes.addAttribute("message","Incorrect current password.");
+        } else {
+            redirectAttributes.addAttribute("message", "Incorrect current password.");
             return "redirect:/profile/changepasswordfail";
         }
     }
+
     @GetMapping("/profile/changepasswordsuccess")
-    public String getChangePasswordSuccessPage(Model model){
+    public String getChangePasswordSuccessPage(Model model) {
         return "changepasswordsuccess";
     }
+
     @GetMapping("/profile/changepasswordfail")
-    public String getChangePasswordFailPage(Model model){
+    public String getChangePasswordFailPage(Model model) {
         return "changepasswordfail";
     }
 
     @GetMapping("/profile/changeemail")
-    public String getChangeEmailPage(Model model){
+    public String getChangeEmailPage(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         model.addAttribute("user", userRepository.findByUsername(auth.getName()));
 
         return "changeemail";
     }
+
     @PostMapping("/profile/changeemail")
-    public String postChangeEmail(@RequestParam String newEmail){
+    public String postChangeEmail(@RequestParam String newEmail) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User userToChange =  userRepository.findByUsername(auth.getName());
-        userRepository.changeUserEmail(userToChange.getId(),newEmail);
+        User userToChange = userRepository.findByUsername(auth.getName());
+        userRepository.changeUserEmail(userToChange.getId(), newEmail);
         return "redirect:/logout";
     }
 
 
     @GetMapping("/profile/joboffers")
-    public String getPostedJobOffersPage(Model model){
+    public String getPostedJobOffersPage(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         List<JobDetails> listOfJobOffers = jobDetailsRepository.findOffersByOwner(auth.getName());
-        model.addAttribute("listOfJobOffers",listOfJobOffers);
+        model.addAttribute("listOfJobOffers", listOfJobOffers);
         return "showalluserjoboffers";
     }
 
     @GetMapping("/register")
-    public String getRegistrationPage(Model model){
+    public String getRegistrationPage(Model model, RedirectAttributes redirectAttributes) {
         model.addAttribute("user", new User());
+        model.addAttribute("message", "");
         return "register";
     }
+
     @PostMapping("/register")
-    public String postRegister(@ModelAttribute(name = "user") User user) {
-        user.setRole("USER");
-        userRepository.addNewUser(user);
-        System.out.println("user added");
-        System.out.println("login: " + user.getUsername());
-        System.out.println("password: " + user.getPassword());
-        System.out.println("email: " + user.getEmail());
-        System.out.println("role: " + user.getRole());
-        return "redirect:/";
+    public String postRegister(@ModelAttribute(name = "user") User user, RedirectAttributes redirectAttributes) {
+        if (userRepository.checkIfUserOfGivenUsernameAlreadyExist(user) && userRepository.checkIfUserOfGivenEmailAlreadyExist(user)) {
+            redirectAttributes.addFlashAttribute("usernameAndEmailError", "Username already taken! \n Email already taken!");
+            return "redirect:/register";
+        }
+        if (userRepository.checkIfUserOfGivenUsernameAlreadyExist(user)) {
+            redirectAttributes.addFlashAttribute("usernameError", "User of given username already exists!");
+            return "redirect:/register";
+        }
+        if (userRepository.checkIfUserOfGivenEmailAlreadyExist(user)) {
+            redirectAttributes.addFlashAttribute("emailError", "User with given email already exists!");
+            return "redirect:/register";
+        }
+         if (!userRepository.checkIfUserOfGivenUsernameAlreadyExist(user) && !userRepository.checkIfUserOfGivenEmailAlreadyExist(user)) {
+            user.setRole("USER");
+            userRepository.addNewUser(user);
+            return "redirect:/";
+        }
+        return "register";
     }
 }

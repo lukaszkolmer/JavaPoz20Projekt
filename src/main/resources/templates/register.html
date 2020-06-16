@@ -13,6 +13,11 @@
     <label for="email">Email: </label><input th:field="*{email}" name="email" type="email" id="email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter email'" th:required="true"><br><br><br>
     <button type="submit" class="button button-contactForm btn_4 boxed-btn">Send Message</button>
 </form>
+<th:block>
+    <p th:if="${usernameError!= null}" th:text="${usernameError}"> error message goes here</p>
+    <p th:if="${emailError!= null}" th:text="${emailError}"> error message goes here</p>
+    <p th:if="${usernameAndEmailError!= null}" th:text="${usernameAndEmailError}"> error message goes here</p>
+</th:block>
 <br><br>
 <a href="/" ><button>Home Page</button></a><br>
 </body>
