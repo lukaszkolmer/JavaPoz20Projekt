@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="user.name"> </title>
+</head>
+<body>
+<h1>User information: </h1>
+<p th:text="${'Username: ' + userToView.username}">username:</p>
+<br>
+<h2>User active offers: </h2><br>
+<th:block th:each="JobDetails,JobDetailsState : ${listOfJobOffers}">
+    <span th:if="${JobDetails.isActive == true}">
+    <a th:href="@{'/JobDetails.html?id=' + ${JobDetails.getId()}}" href="JobDetails.html">
+        <h4 th:text="${JobDetails.getTitle() + ' posted on ' + JobDetails.publishDate}">Offer title goes here</h4></a><br>
+         <a  th:if="${viewingUser.role=='ADMIN'}" th:href="@{/jobs/deactivate/{id}(id=${JobDetails.id})}" th:method="GET"><button>Deactivate</button></a><br>
+    </span>
+</th:block>
+<h3 th:if="${viewingUser.role=='ADMIN'}">User deactivated offers: </h3><br>
+<th:block th:if="${viewingUser.role=='ADMIN'}" th:each="JobDetails,JobDetailsState : ${listOfJobOffers}">
+    <span th:if="${JobDetails.isActive == false}">
+    <a th:href="@{'/JobDetails.html?id=' + ${JobDetails.getId()}}" href="JobDetails.html" >
+        <h4 th:text="${JobDetails.getTitle() + ' posted on ' + JobDetails.publishDate}">Offer title goes here</h4></a><br>
+    </span>
+</th:block>
+<br><br><br>
+<a href="/" ><button>Home Page</button></a><br>
+</body>
+</html>

@@ -52,7 +52,7 @@ public class JobsController {
     }
 
     @RequestMapping(value = "/jobs/addnew", method = RequestMethod.POST)
-    public String addNewUserMessage(@ModelAttribute(name = "jobDetails") JobDetails jobDetails) {
+    public String addNewJobOffer(@ModelAttribute(name = "jobDetails") JobDetails jobDetails) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails = userDetailsService.loadUserByUsername(auth.getName());
         LocalDate currentDate = LocalDate.now();
@@ -72,12 +72,6 @@ public class JobsController {
         JobDetails jobDetails = jobDetailsRepository.findOfferById(id);
         jobDetailsRepository.deactivateJobOffer(id);
         System.out.println("deactivated: " + jobDetails.getId());
-        if (jobDetails.isActive){
-            System.out.println("still active lol");
-        }
-        else {
-            System.out.println("not active pog");
-        }
         return "redirect:/profile/joboffers";
     }
 

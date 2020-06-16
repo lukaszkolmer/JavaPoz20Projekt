@@ -11,10 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -38,6 +35,19 @@ public class ProfileController {
         return "profile";
     }
 
+    @GetMapping("/profile/view/{id}")
+    public String getViewProfilePage(@PathVariable("id") Long id, Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User viewingUser = userRepository.findByUsername(auth.getName());
+        User userToView = userRepository.findUserById(id);
+        List<JobDetails> listOfJobOffers = jobDetailsRepository.findOffersByOwner(userToView.username);
+        model.addAttribute("listOfJobOffers", listOfJobOffers);
+        model.addAttribute("userToView", userToView);
+        model.addAttribute("viewingUser", viewingUser);
+        return "viewprofile";
+    }
+
+
     @GetMapping("/profile/changepassword")
     public String getChangePasswordPage(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -46,7 +56,7 @@ public class ProfileController {
     }
 
     @PostMapping("/profile/changepassword")
-    public String postChangePassword(@RequestParam String currentPassword, @RequestParam String newPassword, Model model, RedirectAttributes redirectAttributes) {
+    public String postChangePassword(@RequestParam String currentPassword, @RequestParam String newPassword, RedirectAttributes redirectAttributes) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User userToChange = userRepository.findByUsername(auth.getName());
         if (userToChange.getPassword().equals(currentPassword)) {
@@ -114,7 +124,7 @@ public class ProfileController {
             redirectAttributes.addFlashAttribute("emailError", "User with given email already exists!");
             return "redirect:/register";
         }
-         if (!userRepository.checkIfUserOfGivenUsernameAlreadyExist(user) && !userRepository.checkIfUserOfGivenEmailAlreadyExist(user)) {
+        if (!userRepository.checkIfUserOfGivenUsernameAlreadyExist(user) && !userRepository.checkIfUserOfGivenEmailAlreadyExist(user)) {
             user.setRole("USER");
             userRepository.addNewUser(user);
             return "redirect:/";
