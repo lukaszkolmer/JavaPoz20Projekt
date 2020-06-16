@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -89,5 +90,22 @@ public class ProfileController {
         List<JobDetails> listOfJobOffers = jobDetailsRepository.findOffersByOwner(auth.getName());
         model.addAttribute("listOfJobOffers",listOfJobOffers);
         return "showalluserjoboffers";
+    }
+
+    @GetMapping("/register")
+    public String getRegistrationPage(Model model){
+        model.addAttribute("user", new User());
+        return "register";
+    }
+    @PostMapping("/register")
+    public String postRegister(@ModelAttribute(name = "user") User user) {
+        user.setRole("USER");
+        userRepository.addNewUser(user);
+        System.out.println("user added");
+        System.out.println("login: " + user.getUsername());
+        System.out.println("password: " + user.getPassword());
+        System.out.println("email: " + user.getEmail());
+        System.out.println("role: " + user.getRole());
+        return "redirect:/";
     }
 }

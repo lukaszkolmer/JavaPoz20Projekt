@@ -31,12 +31,12 @@ public class UserRepositoryImpl {
         return userRepository.findById(id).orElseThrow(() -> new NoUserOfGivenID(id));
     }
 
-    public User addNewJobOffer(User userToAdd) {
+    public User addNewUser(User userToAdd) {
         userRepository.save(userToAdd);
         return userToAdd;
     }
 
-    public User removeJobOffer(User userToRemove) {
+    public User removeUser(User userToRemove) {
         userRepository.delete(userToRemove);
         return userToRemove;
     }
