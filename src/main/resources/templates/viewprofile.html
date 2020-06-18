@@ -7,7 +7,9 @@
 <body>
 <h1>User information: </h1>
 <p th:text="${'Username: ' + userToView.username}">username:</p>
-<br>
+<br><br>
+<a th:href="@{/u2umessage(id=${userToView.id})}" ><button>Send message</button></a><br><br>
+
 <h2>User active offers: </h2><br>
 <th:block th:each="JobDetails,JobDetailsState : ${listOfJobOffers}">
     <span th:if="${JobDetails.isActive == true}">

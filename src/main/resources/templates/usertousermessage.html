@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Send message</title>
+</head>
+<body>
+<h1 th:text="'Sending message to: ' + ${receiver.username}" th:href="@{/profile/view/${receiver.id}}" href="">Header goes here</h1>
+<form action="#" th:action="@{/u2umessage(id=${receiver.id})}" th:object="${userToUserMessage}" method="post">
+<fieldset>
+
+    <!-- Form Name -->
+    <legend>Send message:</legend>
+
+    <!-- Text input-->
+    <div class="form-group">
+        <label class="col-md-4 control-label" for="title">Title</label>
+        <div class="col-md-4">
+            <input th:field="${userToUserMessage.title}" id="title" name="title" type="text" placeholder="" class="form-control input-md">
+
+        </div>
+    </div>
+
+    <!-- Textarea -->
+    <div class="form-group">
+        <label class="col-md-4 control-label" for="message">Message</label>
+        <div class="col-md-4">
+            <textarea th:field="${userToUserMessage.message}" class="form-control" id="message" name="message"></textarea>
+        </div>
+    </div>
+<br><br>
+    <!-- File Button -->
+    <div class="form-group">
+        <label class="col-md-4 control-label" for="filebutton">File Button</label>
+        <div class="col-md-4">
+            <input th:field="${userToUserMessage.file}" id="filebutton" name="filebutton" class="input-file" type="file">
+        </div>
+    </div>
+
+    <!-- Button (Double) -->
+    <div class="form-group">
+        <label class="col-md-4 control-label" for="submitButton"></label>
+        <div class="col-md-8">
+            <button type="submit" id="submitButton" name="submitButton" class="btn btn-success">Submit</button>
+            <button type="reset"  id="cancelButton" name="cancelButton" class="btn btn-danger">Clear</button>
+        </div>
+    </div>
+
+</fieldset>
+</form>
+<br><br>
+<a href="/" ><button>Home Page</button></a><br>
+</body>
+</html>
