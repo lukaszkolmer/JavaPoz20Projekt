@@ -59,24 +59,19 @@ public class ProfileController {
     public String postChangePassword(@RequestParam String currentPassword, @RequestParam String newPassword, RedirectAttributes redirectAttributes) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User userToChange = userRepository.findByUsername(auth.getName());
-        if (userToChange.getPassword().equals(currentPassword)) {
+        if (userToChange.getPassword().equals(currentPassword)&&!userToChange.getPassword().equals(newPassword)) {
             userRepository.changeUserPassword(userToChange.getId(), newPassword);
-            return "redirect:/profile/changepasswordsuccess";
-        } else {
-            redirectAttributes.addAttribute("message", "Incorrect current password.");
-            return "redirect:/profile/changepasswordfail";
+            redirectAttributes.addFlashAttribute("passwordChangeMessage","Password change successful");
         }
+        else if (userToChange.getPassword().equals(newPassword)) {
+            redirectAttributes.addFlashAttribute("passwordChangeMessage","New password is the same as old one.");
+        }
+        else {
+            redirectAttributes.addFlashAttribute("passwordChangeMessage", "Incorrect current password.");
+        }
+        return "redirect:/profile/" + "changepassword";
     }
 
-    @GetMapping("/profile/changepasswordsuccess")
-    public String getChangePasswordSuccessPage(Model model) {
-        return "changepasswordsuccess";
-    }
-
-    @GetMapping("/profile/changepasswordfail")
-    public String getChangePasswordFailPage(Model model) {
-        return "changepasswordfail";
-    }
 
     @GetMapping("/profile/changeemail")
     public String getChangeEmailPage(Model model) {
@@ -87,11 +82,12 @@ public class ProfileController {
     }
 
     @PostMapping("/profile/changeemail")
-    public String postChangeEmail(@RequestParam String newEmail) {
+    public String postChangeEmail(@RequestParam String newEmail,RedirectAttributes redirectAttributes) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User userToChange = userRepository.findByUsername(auth.getName());
         userRepository.changeUserEmail(userToChange.getId(), newEmail);
-        return "redirect:/logout";
+        redirectAttributes.addFlashAttribute("changeemailmessage","Email change successful");
+        return "redirect:/profile/" + "changeemail";
     }
 
 
@@ -104,9 +100,8 @@ public class ProfileController {
     }
 
     @GetMapping("/register")
-    public String getRegistrationPage(Model model, RedirectAttributes redirectAttributes) {
+    public String getRegistrationPage(Model model) {
         model.addAttribute("user", new User());
-        model.addAttribute("message", "");
         return "register";
     }
 

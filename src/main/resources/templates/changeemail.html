@@ -25,6 +25,10 @@
         <br>
     </form>
 <br><br>
+<th:block >
+    <p th:if="${changeemailmessage!=null}" th:text="${changeemailmessage}">Message</p>
+</th:block>
+<br><br>
 <a href="/profile" ><button>Back to profile</button></a><br>
 </body>
 </html>
