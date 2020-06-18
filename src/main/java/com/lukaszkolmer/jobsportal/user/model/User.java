@@ -22,7 +22,7 @@ public class User {
     public String password;
     public String role; // user, mod, admin
 
-    public User( String email, String username, String password, String role) {
+    public User(String email, String username, String password, String role) {
         this.email = email;
         this.username = username;
         this.password = password;

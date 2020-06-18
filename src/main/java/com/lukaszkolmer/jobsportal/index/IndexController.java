@@ -1,7 +1,7 @@
 package com.lukaszkolmer.jobsportal.index;
 
 import com.lukaszkolmer.jobsportal.jobs.model.JobDetails;
-import com.lukaszkolmer.jobsportal.jobs.repository.JobDetailsRepositoryImpl;
+import com.lukaszkolmer.jobsportal.jobs.services.JobDetailsRepositoryServices;
 import com.lukaszkolmer.jobsportal.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -19,7 +19,7 @@ public class IndexController {
 //html 56, rozwijane menu "pages" do zrobienia
 
     @Autowired
-    JobDetailsRepositoryImpl jobDetailsRepository;
+    JobDetailsRepositoryServices jobDetailsRepository;
     @Autowired
     UserDetailsService userDetailsService;
 

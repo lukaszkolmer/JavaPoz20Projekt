@@ -1,6 +1,7 @@
-package com.lukaszkolmer.jobsportal.contact.repository;
+package com.lukaszkolmer.jobsportal.contact.services;
 
 import com.lukaszkolmer.jobsportal.contact.model.UserMessage;
+import com.lukaszkolmer.jobsportal.contact.repository.UserMessageRepository;
 import com.lukaszkolmer.jobsportal.jobs.exceptions.NoOfferOfGivenID;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,7 @@ import java.util.stream.Collectors;
 
 @Component
 @Data
-public class UserMessageRepositoryImpl {
+public class UserMessageRepositoryServices {
 
     @Autowired
     private UserMessageRepository userMessageRepository;

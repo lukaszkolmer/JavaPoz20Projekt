@@ -2,7 +2,7 @@ package com.lukaszkolmer.jobsportal.contact.controller;
 
 import com.lukaszkolmer.jobsportal.contact.model.CompanyInfo;
 import com.lukaszkolmer.jobsportal.contact.model.UserMessage;
-import com.lukaszkolmer.jobsportal.contact.repository.UserMessageRepositoryImpl;
+import com.lukaszkolmer.jobsportal.contact.services.UserMessageRepositoryServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +17,7 @@ import java.util.List;
 public class ContactController {
 
     @Autowired
-    UserMessageRepositoryImpl userMessageRepositoryImpl;
+    UserMessageRepositoryServices userMessageRepositoryServices;
 
     @GetMapping({"/contact", "/contact.html"})
     public String getContact(Model model) {
@@ -29,14 +29,14 @@ public class ContactController {
 
     @GetMapping("/contact/messages")
     public String showMessages(Model model) {
-        List<UserMessage> messageList = userMessageRepositoryImpl.getUserMessageRepository().findAll();
+        List<UserMessage> messageList = userMessageRepositoryServices.getUserMessageRepository().findAll();
         model.addAttribute("messageList", messageList);
         return "contactmessage";
     }
 
     @RequestMapping(value = "/contact/addmsg", method = RequestMethod.POST)
     public String addNewUserMessage(@ModelAttribute(name = "userMessage") UserMessage userMessage) {
-        userMessageRepositoryImpl.addNewUserMessage(userMessage);
+        userMessageRepositoryServices.addNewUserMessage(userMessage);
         return "messagesentsuccess";
     }
 }

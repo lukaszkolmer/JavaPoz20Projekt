@@ -1,10 +1,10 @@
 package com.lukaszkolmer.jobsportal.user.controller;
 
 import com.lukaszkolmer.jobsportal.jobs.model.JobDetails;
-import com.lukaszkolmer.jobsportal.jobs.repository.JobDetailsRepositoryImpl;
+import com.lukaszkolmer.jobsportal.jobs.services.JobDetailsRepositoryServices;
 import com.lukaszkolmer.jobsportal.security.UserDetailsService;
 import com.lukaszkolmer.jobsportal.user.model.User;
-import com.lukaszkolmer.jobsportal.user.repository.UserRepositoryImpl;
+import com.lukaszkolmer.jobsportal.user.services.UserRepositoryServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,11 +20,11 @@ import java.util.List;
 public class ProfileController {
 
     @Autowired
-    UserRepositoryImpl userRepository;
+    UserRepositoryServices userRepository;
     @Autowired
     UserDetailsService userDetailsService;
     @Autowired
-    JobDetailsRepositoryImpl jobDetailsRepository;
+    JobDetailsRepositoryServices jobDetailsRepository;
 
     @GetMapping("/profile")
     public String getProfileSettings(Model model) {
@@ -59,14 +59,12 @@ public class ProfileController {
     public String postChangePassword(@RequestParam String currentPassword, @RequestParam String newPassword, RedirectAttributes redirectAttributes) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User userToChange = userRepository.findByUsername(auth.getName());
-        if (userToChange.getPassword().equals(currentPassword)&&!userToChange.getPassword().equals(newPassword)) {
+        if (userToChange.getPassword().equals(currentPassword) && !userToChange.getPassword().equals(newPassword)) {
             userRepository.changeUserPassword(userToChange.getId(), newPassword);
-            redirectAttributes.addFlashAttribute("passwordChangeMessage","Password change successful");
-        }
-        else if (userToChange.getPassword().equals(newPassword)) {
-            redirectAttributes.addFlashAttribute("passwordChangeMessage","New password is the same as old one.");
-        }
-        else {
+            redirectAttributes.addFlashAttribute("passwordChangeMessage", "Password change successful");
+        } else if (userToChange.getPassword().equals(newPassword)) {
+            redirectAttributes.addFlashAttribute("passwordChangeMessage", "New password is the same as old one.");
+        } else {
             redirectAttributes.addFlashAttribute("passwordChangeMessage", "Incorrect current password.");
         }
         return "redirect:/profile/" + "changepassword";
@@ -82,11 +80,11 @@ public class ProfileController {
     }
 
     @PostMapping("/profile/changeemail")
-    public String postChangeEmail(@RequestParam String newEmail,RedirectAttributes redirectAttributes) {
+    public String postChangeEmail(@RequestParam String newEmail, RedirectAttributes redirectAttributes) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User userToChange = userRepository.findByUsername(auth.getName());
         userRepository.changeUserEmail(userToChange.getId(), newEmail);
-        redirectAttributes.addFlashAttribute("changeemailmessage","Email change successful");
+        redirectAttributes.addFlashAttribute("changeemailmessage", "Email change successful");
         return "redirect:/profile/" + "changeemail";
     }
 

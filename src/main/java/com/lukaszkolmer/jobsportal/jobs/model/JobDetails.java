@@ -33,7 +33,7 @@ public class JobDetails {
     public boolean isActive = true;
 
     public JobDetails(String category, String title, String description, String responsibility, String qualifications, String benefits,
-                      String location, String salary, String vacancy, LocalDate publishDate, String jobNature,String owner) {
+                      String location, String salary, String vacancy, LocalDate publishDate, String jobNature, String owner) {
         this.category = category;
         this.title = title;
         this.description = description;

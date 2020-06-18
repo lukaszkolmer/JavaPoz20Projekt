@@ -2,7 +2,7 @@ package com.lukaszkolmer.jobsportal.jobs.controller;
 
 import com.lukaszkolmer.jobsportal.jobs.exceptions.NoOfferOfGivenID;
 import com.lukaszkolmer.jobsportal.jobs.model.JobDetails;
-import com.lukaszkolmer.jobsportal.jobs.repository.JobDetailsRepositoryImpl;
+import com.lukaszkolmer.jobsportal.jobs.services.JobDetailsRepositoryServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,7 +20,7 @@ import java.util.List;
 public class JobsController {
 
     @Autowired
-    JobDetailsRepositoryImpl jobDetailsRepository;
+    JobDetailsRepositoryServices jobDetailsRepository;
     @Autowired
     UserDetailsService userDetailsService;
 

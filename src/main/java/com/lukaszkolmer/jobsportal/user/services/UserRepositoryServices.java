@@ -1,7 +1,8 @@
-package com.lukaszkolmer.jobsportal.user.repository;
+package com.lukaszkolmer.jobsportal.user.services;
 
 import com.lukaszkolmer.jobsportal.user.exceptions.NoUserOfGivenID;
 import com.lukaszkolmer.jobsportal.user.model.User;
+import com.lukaszkolmer.jobsportal.user.repository.UserRepository;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -10,12 +11,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Data
-public class UserRepositoryImpl {
+public class UserRepositoryServices {
 
     UserRepository userRepository;
 
     @Autowired
-    public UserRepositoryImpl(UserRepository userRepository) {
+    public UserRepositoryServices(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -68,19 +69,21 @@ public class UserRepositoryImpl {
         userRepository.save(user);
         return user;
     }
-    public boolean checkIfUserOfGivenUsernameAlreadyExist(User user){
-        if (findByUsername(user.getUsername())== null) {
+
+    public boolean checkIfUserOfGivenUsernameAlreadyExist(User user) {
+        if (findByUsername(user.getUsername()) == null) {
             return false;
+        } else {
+            return true;
         }
-        else
-        {return true;}
     }
-    public boolean checkIfUserOfGivenEmailAlreadyExist(User user){
-        if (findByEmail(user.getEmail())== null) {
+
+    public boolean checkIfUserOfGivenEmailAlreadyExist(User user) {
+        if (findByEmail(user.getEmail()) == null) {
             return false;
+        } else {
+            return true;
         }
-        else
-        {return true;}
     }
 
 }

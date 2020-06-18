@@ -21,7 +21,7 @@ public class UserMessage {
     String subject;
     String message;
 
-    public UserMessage(String userName,String userEmail,String subject, String message) {
+    public UserMessage(String userName, String userEmail, String subject, String message) {
         this.userName = userName;
         this.userEmail = userEmail;
         this.subject = subject;

@@ -1,7 +1,8 @@
-package com.lukaszkolmer.jobsportal.jobs.repository;
+package com.lukaszkolmer.jobsportal.jobs.services;
 
 import com.lukaszkolmer.jobsportal.jobs.exceptions.NoOfferOfGivenID;
 import com.lukaszkolmer.jobsportal.jobs.model.JobDetails;
+import com.lukaszkolmer.jobsportal.jobs.repository.JobDetailsRepository;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -14,12 +15,12 @@ import java.util.stream.Collectors;
 
 @Component
 @Data
-public class JobDetailsRepositoryImpl {
+public class JobDetailsRepositoryServices {
 
     private JobDetailsRepository jobDetailsRepository;
 
     @Autowired
-    public JobDetailsRepositoryImpl(JobDetailsRepository jobDetailsRepository) {
+    public JobDetailsRepositoryServices(JobDetailsRepository jobDetailsRepository) {
         this.jobDetailsRepository = jobDetailsRepository;
     }
 
@@ -78,12 +79,14 @@ public class JobDetailsRepositoryImpl {
         jobDetailsRepository.save(jobOfferToAdd);
         return jobOfferToAdd;
     }
+
     public JobDetails deactivateJobOffer(Long id) {
         JobDetails jobToDeactivate = jobDetailsRepository.getOne(id);
         jobToDeactivate.isActive = false;
         jobDetailsRepository.save(jobToDeactivate);
         return jobToDeactivate;
     }
+
     public JobDetails activateJobOffer(Long id) {
         JobDetails jobToActivate = jobDetailsRepository.getOne(id);
         jobToActivate.isActive = true;

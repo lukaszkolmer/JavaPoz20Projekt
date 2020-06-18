@@ -1,7 +1,7 @@
 package com.lukaszkolmer.jobsportal.security;
 
 import com.lukaszkolmer.jobsportal.user.model.User;
-import com.lukaszkolmer.jobsportal.user.repository.UserRepositoryImpl;
+import com.lukaszkolmer.jobsportal.user.services.UserRepositoryServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
 
     @Autowired
-    UserRepositoryImpl userRepository;
+    UserRepositoryServices userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {

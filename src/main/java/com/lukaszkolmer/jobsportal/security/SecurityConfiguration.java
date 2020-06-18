@@ -1,6 +1,6 @@
 package com.lukaszkolmer.jobsportal.security;
 
-import com.lukaszkolmer.jobsportal.user.repository.UserRepositoryImpl;
+import com.lukaszkolmer.jobsportal.user.services.UserRepositoryServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,7 +18,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    UserRepositoryImpl userRepository;
+    UserRepositoryServices userRepository;
     @Autowired
     private UserDetailsService userDetailsService;
 
@@ -40,7 +40,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 //.and()
                 //.authorizeRequests().antMatchers("/profile/view/**").permitAll() // should make viewing profile available without logging, currently not working
                 .and()
-                .authorizeRequests().antMatchers("/profile/**").hasAnyRole("USER","ADMIN")
+                .authorizeRequests().antMatchers("/profile/**").hasAnyRole("USER", "ADMIN")
                 .and()
                 .authorizeRequests().antMatchers("/admindashboard").hasRole("ADMIN")
                 .and()

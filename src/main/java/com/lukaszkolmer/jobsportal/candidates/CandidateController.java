@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class CandidateController {
 
-        @GetMapping({"/candidate","/candidate.html"})
-        public String getContact(){
-            return "candidate";
-        }
+    @GetMapping({"/candidate", "/candidate.html"})
+    public String getContact() {
+        return "candidate";
+    }
 }
