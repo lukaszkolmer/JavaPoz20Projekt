@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.io.File;
+import java.time.LocalDate;
 
 @Data
 @Entity
@@ -23,7 +24,9 @@ public class UserToUserMessage {
     File file;
     String sender;
     String receiver;
-    boolean read = false;
+    LocalDate sentDate = null;
+    LocalDate receivedDate = null;
+    boolean alreadyRead = false;
 
     public UserToUserMessage(String title, String message, File file, String sender,String receiver) {
         this.title = title;
@@ -33,4 +36,5 @@ public class UserToUserMessage {
         this.receiver = receiver;
 
     }
+
 }

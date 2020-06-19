@@ -6,7 +6,7 @@
 </head>
 <body>
 <h1 th:text="'Sending message to: ' + ${receiver.username}" th:href="@{/profile/view/${receiver.id}}" href="">Header goes here</h1>
-<form action="#" th:action="@{/u2umessage(id=${receiver.id})}" th:object="${userToUserMessage}" method="post">
+<form action="#" th:action="@{/u2umessage(userid=${receiver.id})}" th:object="${userToUserMessage}" method="post">
 <fieldset>
 
     <!-- Form Name -->
@@ -50,5 +50,6 @@
 </form>
 <br><br>
 <a href="/" ><button>Home Page</button></a><br>
+<a href="/profile/mailbox" ><button>Back to mailbox</button></a><br>
 </body>
 </html>

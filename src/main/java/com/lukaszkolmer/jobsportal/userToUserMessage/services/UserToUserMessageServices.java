@@ -1,5 +1,7 @@
 package com.lukaszkolmer.jobsportal.userToUserMessage.services;
 
+import com.lukaszkolmer.jobsportal.jobs.model.JobDetails;
+import com.lukaszkolmer.jobsportal.userToUserMessage.exceptions.NoUserToUserMessageOfGivenID;
 import com.lukaszkolmer.jobsportal.userToUserMessage.model.UserToUserMessage;
 import com.lukaszkolmer.jobsportal.userToUserMessage.repository.UserToUserMessageRepository;
 import com.lukaszkolmer.jobsportal.jobs.exceptions.NoOfferOfGivenID;
@@ -28,7 +30,7 @@ public class UserToUserMessageServices {
     }
 
     public UserToUserMessage findUserToUserMessageById(Long id) {
-        return userToUserMessageRepository.findById(id).orElseThrow(() -> new NoOfferOfGivenID(id));
+        return userToUserMessageRepository.findById(id).orElseThrow(() -> new NoUserToUserMessageOfGivenID(id));
     }
 
     public List<UserToUserMessage> findUserToUserMessageBySender(String sender) {
@@ -36,6 +38,18 @@ public class UserToUserMessageServices {
     }
     public List<UserToUserMessage> findUserToUserMessageByReceiver(String receiver) {
         return userToUserMessageRepository.findAll().stream().filter(userToUserMessage -> userToUserMessage.getReceiver().equals(receiver)).collect(Collectors.toList());
+    }
+    public UserToUserMessage markMessageAsAlreadyRead(Long id) {
+        UserToUserMessage userToUserMessage = userToUserMessageRepository.getOne(id);
+        userToUserMessage.setAlreadyRead(true);
+        userToUserMessageRepository.save(userToUserMessage);
+        return userToUserMessage;
+    }
+    public UserToUserMessage markMessageAsNotRead(Long id) {
+        UserToUserMessage userToUserMessage = userToUserMessageRepository.getOne(id);
+        userToUserMessage.setAlreadyRead(false);
+        userToUserMessageRepository.save(userToUserMessage);
+        return userToUserMessage;
     }
 
 }

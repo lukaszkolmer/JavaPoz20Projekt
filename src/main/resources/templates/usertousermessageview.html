@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${message.title}">message title</title>
+</head>
+<body>
+<h1 th:text="'Sent to: ' + ${message.getReceiver()}"></h1><br>
+<h1 th:text="'Sent by: ' + ${message.getSender()}"></h1><br>
+<p th:text="'Sent on: ' + ${message.getSentDate()}">sent date </p><br><br>
+
+
+<label for="messagearea"><textarea id="messagearea" name="messagearea" th:text="${message.message}" style="height:250px; width:350px;"> message </textarea >
+</label>
+<br><br>
+<th:block th:if="${message.getFile() != null}">
+
+<p th:text="'Attachment: ' + ${message.file.getName()}">Attachment:</p><br>
+    <a th:href="@{'/profile/mailbox/inbox/'+${message.getId()} + '/downloadatt'(filename=${message.file.getName()})}">
+        <span th:text="${message.file.getName()}"></span></a>
+
+</th:block>
+<br><br>
+<a href="/" ><button>Home Page</button></a><br>
+<a href="/profile/mailbox" ><button>Back to mailbox</button></a><br>
+</body>
+</html>

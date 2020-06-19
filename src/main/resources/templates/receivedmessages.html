@@ -1,0 +1,19 @@
+<!DOCTYPE html >
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Your received messages</title>
+</head>
+<body>
+<h1>Your active job offers: </h1><br>
+<th:block th:each="usertousermessage : ${receivedMessages}">
+    <a th:href="@{'/profile/mailbox/inbox/' + ${usertousermessage.getId()}}" href="" >
+        <p th:text="${usertousermessage.getTitle() + ' received ' +usertousermessage.getReceivedDate()}">message title and received date</p></a><br>
+</th:block>
+<br><br><br>
+
+<a href="/profile" ><button>Back to profile</button></a><br>
+<a href="/" ><button>Home Page</button></a><br>
+</body>
+</html>

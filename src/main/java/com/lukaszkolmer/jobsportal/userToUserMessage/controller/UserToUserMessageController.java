@@ -1,5 +1,6 @@
 package com.lukaszkolmer.jobsportal.userToUserMessage.controller;
 
+import com.lukaszkolmer.jobsportal.fileStorage.services.FileStorageServices;
 import com.lukaszkolmer.jobsportal.user.model.User;
 import com.lukaszkolmer.jobsportal.user.services.UserRepositoryServices;
 import com.lukaszkolmer.jobsportal.userToUserMessage.model.UserToUserMessage;
@@ -13,6 +14,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.time.LocalDate;
 
 @Controller
 public class UserToUserMessageController {
@@ -21,6 +25,8 @@ public class UserToUserMessageController {
     UserRepositoryServices userRepositoryServices;
     @Autowired
     UserToUserMessageServices userToUserMessageServices;
+    @Autowired
+    FileStorageServices fileStorageServices;
 
     @GetMapping("/u2umessage")
     public String getUserToUserMessagePage(Model model, @RequestParam Long id) {
@@ -31,18 +37,20 @@ public class UserToUserMessageController {
         model.addAttribute("userToUserMessage", new UserToUserMessage());
         model.addAttribute("sender", sender);
         model.addAttribute("receiver", receiver);
-        return "usertousermessage";
+        return "usertousermessagesend";
     }
 
     @PostMapping("u2umessage")
-    public String postToUserToUserMessagePage(Model model, @RequestParam Long id,
-                                              @ModelAttribute(name = "userToUserMessage") UserToUserMessage userToUserMessage) {
-        User receiver = userRepositoryServices.findUserById(id);
+    public String postToUserToUserMessagePage(@RequestParam Long userid, @ModelAttribute(name = "userToUserMessage") UserToUserMessage userToUserMessage) {
+        User receiver = userRepositoryServices.findUserById(userid);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User sender = userRepositoryServices.findByUsername(auth.getName());
+        userToUserMessage.setReceivedDate(LocalDate.now());
+        userToUserMessage.setSentDate(LocalDate.now());
         userToUserMessage.setSender(sender.username);
         userToUserMessage.setReceiver(receiver.username);
         userToUserMessageServices.addNewUserToUserMessage(userToUserMessage);
+        System.out.println(userToUserMessage);
         return "messagesentsuccess";
     }
 
