@@ -37,8 +37,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
                 .csrf().disable()
                 .authorizeRequests().antMatchers("/login").permitAll()
-                //.and()
-                //.authorizeRequests().antMatchers("/profile/view/**").permitAll() // should make viewing profile available without logging, currently not working
                 .and()
                 .authorizeRequests().antMatchers("/profile/**").hasAnyRole("USER", "ADMIN")
                 .and()

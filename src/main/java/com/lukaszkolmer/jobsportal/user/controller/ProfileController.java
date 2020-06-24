@@ -192,20 +192,7 @@ public class ProfileController {
     public void downloadAttachmentFromInboxMessage(@PathVariable("id") Long id, @RequestParam("filename") String filename,
                                                    HttpServletResponse response) throws IOException {
         UserToUserMessage message = userToUserMessageServices.findUserToUserMessageById(id);
-        File file = message.getFile();
-        String mimeType = null;
-        if (file.exists()){
-             mimeType = URLConnection.guessContentTypeFromName(file.getName());
-            if (mimeType == null){
-                mimeType = "application/octet-stream";
-            }
-        }
-        response.setContentType(mimeType);
-        response.setHeader("Content-Disposition",
-                String.format("inline; filename=\"" + file.getName() + "\""));
-        response.setContentLength((int) file.length());
-        InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
-        FileCopyUtils.copy(inputStream, response.getOutputStream());
+
 
     }
 }

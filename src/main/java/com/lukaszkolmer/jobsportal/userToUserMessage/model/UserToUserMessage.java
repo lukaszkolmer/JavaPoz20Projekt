@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.io.File;
 import java.time.LocalDate;
 
 @Data
@@ -21,19 +20,18 @@ public class UserToUserMessage {
 
     String title;
     String message;
-    File file;
+    String attachmentLink;
     String sender;
     String receiver;
     LocalDate sentDate = null;
     LocalDate receivedDate = null;
     boolean alreadyRead = false;
 
-    public UserToUserMessage(String title, String message, File file, String sender,String receiver) {
-        this.title = title;
-        this.message = message;
-        this.file = file;
-        this.sender = sender;
-        this.receiver = receiver;
+    public UserToUserMessage(String title, String message, String sender,String receiver) {
+            this.title = title;
+            this.message = message;
+            this.sender = sender;
+            this.receiver = receiver;
 
     }
 
