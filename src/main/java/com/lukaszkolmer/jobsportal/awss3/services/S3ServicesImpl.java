@@ -25,7 +25,7 @@ public class S3ServicesImpl implements S3Services {
     @Autowired
     private AmazonS3 s3client;
 
-    @Value("${mpd.s3.bucket}")
+    @Value("${aws.s3.bucket}")
     private String bucketName;
 
     @Override
