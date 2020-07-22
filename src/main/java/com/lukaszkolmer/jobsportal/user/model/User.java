@@ -22,11 +22,6 @@ public class User {
     public String password;
     public String role; // user, mod, admin
 
-   /* @OneToMany(fetch= FetchType.LAZY, cascade=CascadeType.ALL)
-    public List<UserToUserMessage> sentUserToUserMessages = new ArrayList<>();
-    @OneToMany(fetch= FetchType.LAZY, cascade=CascadeType.ALL)
-    public List<UserToUserMessage> receivedUserToUserMessages = new ArrayList<>();
-*/
 
     public User(String email, String username, String password, String role) {
         this.email = email;

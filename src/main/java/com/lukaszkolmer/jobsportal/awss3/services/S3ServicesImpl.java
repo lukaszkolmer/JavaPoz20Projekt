@@ -1,81 +1,74 @@
 package com.lukaszkolmer.jobsportal.awss3.services;
 
-import com.amazonaws.AmazonClientException;
-import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.*;
-import com.lukaszkolmer.jobsportal.awss3.utilities.Utility;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.logging.Level;
+import java.util.Date;
+import java.util.Objects;
 
 @Service
-public class S3ServicesImpl implements S3Services {
+public class S3ServicesImpl {
 
-    private Logger logger = LoggerFactory.getLogger(S3ServicesImpl.class);
+
+    private AmazonS3 s3client;
 
     @Autowired
-    private AmazonS3 s3client;
+    public S3ServicesImpl(AmazonS3 s3client) {
+        this.s3client = s3client;
+    }
 
     @Value("${aws.s3.bucket}")
     private String bucketName;
 
-    @Override
-    public void downloadFile(String keyName) {
-        try {
-            System.out.println("Downloading an object.");
-            S3Object s3object = s3client.getObject(new GetObjectRequest(bucketName, keyName));
-            System.out.println("Content-Type: " + s3object.getObjectMetadata().getContentType());
-            Utility.displayText(s3object.getObjectContent());
-            logger.info("===================== Import File - Done! =====================");
+    @Value("${aws.s3.endpointUrl}")
+    private String endpointUrl;
 
-        } catch (AmazonServiceException ase) {
-            logger.info("Caught an AmazonServiceException from GET requests, rejected reasons:");
-            logger.info("Error Message:    " + ase.getMessage());
-            logger.info("HTTP Status Code: " + ase.getStatusCode());
-            logger.info("AWS Error Code:   " + ase.getErrorCode());
-            logger.info("Error Type:       " + ase.getErrorType());
-            logger.info("Request ID:       " + ase.getRequestId());
-        } catch (AmazonClientException ace) {
-            logger.info("Caught an AmazonClientException: ");
-            logger.info("Error Message: " + ace.getMessage());
-        } catch (IOException ioe) {
-            logger.info("IOE Error Message: " + ioe.getMessage());
+    public String uploadFile(MultipartFile multipartFile) {
+
+        String fileUrl = "";
+        try {
+            File file = convertMultiPartToFile(multipartFile);
+            String fileName = generateFileName(multipartFile);
+            fileUrl = endpointUrl + "/" + bucketName + "/" + fileName;
+            uploadFileTos3bucket(fileName, file);
+            file.delete();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return fileUrl;
     }
 
-    @Override
-    public void uploadFile(String keyName, String uploadFilePath) {
-        try {
+    public String deleteFileFromS3Bucket(String fileUrl) {
+        String fileName = fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
+        s3client.deleteObject(new DeleteObjectRequest(bucketName + "/", fileName));
+        return "Successfully deleted";
+    }
 
-            File file = new File(uploadFilePath);
-            ObjectMetadata objMetadata = new ObjectMetadata();
-            objMetadata.setContentLength(15L);
 
-            s3client.putObject(new PutObjectRequest(bucketName, keyName, new FileInputStream(file), objMetadata).withCannedAcl(CannedAccessControlList.PublicRead));
-            logger.info("===================== Upload File - Done! =====================");
+    private void uploadFileTos3bucket(String fileName, File file) {
+        s3client.putObject(new PutObjectRequest(bucketName, fileName, file)
+                .withCannedAcl(CannedAccessControlList.PublicRead));
+    }
 
-        } catch (AmazonServiceException ase) {
-            logger.info("Caught an AmazonServiceException from PUT requests, rejected reasons:");
-            logger.info("Error Message:    " + ase.getMessage());
-            logger.info("HTTP Status Code: " + ase.getStatusCode());
-            logger.info("AWS Error Code:   " + ase.getErrorCode());
-            logger.info("Error Type:       " + ase.getErrorType());
-            logger.info("Request ID:       " + ase.getRequestId());
-        } catch (AmazonClientException ace) {
-            logger.info("Caught an AmazonClientException: ");
-            logger.info("Error Message: " + ace.getMessage());
-        } catch (FileNotFoundException ex) {
-            java.util.logging.Logger.getLogger(S3ServicesImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    private File convertMultiPartToFile(MultipartFile file) throws IOException {
+        File convFile = new File(Objects.requireNonNull(file.getOriginalFilename()));
+        FileOutputStream fos = new FileOutputStream(convFile);
+        fos.write(file.getBytes());
+        fos.close();
+        return convFile;
+    }
+
+    private String generateFileName(MultipartFile multiPart) {
+        return new Date().getTime() + "-" + Objects.requireNonNull(multiPart.getOriginalFilename()).replace(" ", "_");
     }
 }
 
