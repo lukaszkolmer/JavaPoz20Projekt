@@ -12,13 +12,13 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AWSS3Config {
 
-    // Access key id will be read from the application.properties file during the application intialization.
+    // Access key id will be read from the application.properties file during the application initialization.
     @Value("${aws.access_key_id}")
     private String accessKeyId;
-    // Secret access key will be read from the application.properties file during the application intialization.
+    // Secret access key will be read from the application.properties file during the application initialization.
     @Value("${aws.secret_access_key}")
     private String secretAccessKey;
-    // Region will be read from the application.properties file  during the application intialization.
+    // Region will be read from the application.properties file  during the application initialization.
     @Value("${aws.s3.region}")
     private String region;
 
