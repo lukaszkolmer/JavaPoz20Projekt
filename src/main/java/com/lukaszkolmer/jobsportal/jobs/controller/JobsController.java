@@ -31,7 +31,7 @@ public class JobsController {
         return "jobs";
     }
 
-    @GetMapping("JobDetails.html") // inaczej nie działa, duże znaki w adresie?
+    @GetMapping("JobDetails.html")
     public String getJobsDetails(Model model, @RequestParam Long id) {
 
         JobDetails jobDetails = jobDetailsRepository.findOfferById(id);

@@ -18,14 +18,14 @@ import java.util.Objects;
 @Service
 public class S3ServicesImpl {
 
-
+    @Autowired
     private AmazonS3 s3client;
 
-    @Autowired
-    public S3ServicesImpl(AmazonS3 s3client) {
+
+   /* public S3ServicesImpl(AmazonS3 s3client) {
         this.s3client = s3client;
     }
-
+*/
     @Value("${aws.s3.bucket}")
     private String bucketName;
 

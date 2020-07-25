@@ -85,6 +85,7 @@
             <artifactId>aws-java-sdk-dynamodb</artifactId>
             <version>1.11.327</version>
         </dependency>
+
     </dependencies>
 
     <build>
