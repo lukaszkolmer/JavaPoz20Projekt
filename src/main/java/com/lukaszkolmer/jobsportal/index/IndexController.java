@@ -16,7 +16,6 @@ import java.util.List;
 @Controller
 public class IndexController {
 
-//html 56, rozwijane menu "pages" do zrobienia
 
     @Autowired
     JobDetailsRepositoryServices jobDetailsRepository;

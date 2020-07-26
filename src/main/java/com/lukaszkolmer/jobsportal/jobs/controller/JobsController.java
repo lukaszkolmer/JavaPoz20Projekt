@@ -1,8 +1,14 @@
 package com.lukaszkolmer.jobsportal.jobs.controller;
 
+import com.lukaszkolmer.jobsportal.attachment.model.Attachment;
+import com.lukaszkolmer.jobsportal.attachment.services.AttachmentRepositoryImpl;
 import com.lukaszkolmer.jobsportal.jobs.exceptions.NoOfferOfGivenID;
 import com.lukaszkolmer.jobsportal.jobs.model.JobDetails;
 import com.lukaszkolmer.jobsportal.jobs.services.JobDetailsRepositoryServices;
+import com.lukaszkolmer.jobsportal.user.model.User;
+import com.lukaszkolmer.jobsportal.user.services.UserRepositoryServices;
+import com.lukaszkolmer.jobsportal.userToUserMessage.model.UserToUserMessage;
+import com.lukaszkolmer.jobsportal.userToUserMessage.services.UserToUserMessageServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,6 +29,12 @@ public class JobsController {
     JobDetailsRepositoryServices jobDetailsRepository;
     @Autowired
     UserDetailsService userDetailsService;
+    @Autowired
+    UserRepositoryServices userRepositoryServices;
+    @Autowired
+    UserToUserMessageServices userToUserMessageServices;
+    @Autowired
+    AttachmentRepositoryImpl attachmentRepository;
 
     @GetMapping({"/jobs", "jobs.html"})
     public String getJobs(Model model) {
@@ -33,8 +45,25 @@ public class JobsController {
 
     @GetMapping("JobDetails.html")
     public String getJobsDetails(Model model, @RequestParam Long id) {
-
         JobDetails jobDetails = jobDetailsRepository.findOfferById(id);
+        User receiver = userRepositoryServices.findByUsername(jobDetails.getOwner());
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User sender = userRepositoryServices.findByUsername(auth.getName());
+        if (attachmentRepository.findAttachmentOfUser(sender.getUsername())!=null)
+        {
+            Attachment attachment = attachmentRepository.findAttachmentOfUser(sender.getUsername());
+            model.addAttribute("attachment", attachment);
+        }
+        else {
+            model.addAttribute("attachment", null);
+        }
+        model.addAttribute("userToUserMessage", new UserToUserMessage());
+        model.addAttribute("sender", sender);
+        model.addAttribute("receiver", receiver);
+
+
+
         model.addAttribute("jobOffer", jobDetails);
 
         return "job_details";
