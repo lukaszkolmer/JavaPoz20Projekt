@@ -1,6 +1,8 @@
 package com.lukaszkolmer.jobsportal.userToUserMessage.controller;
 
 
+import com.lukaszkolmer.jobsportal.attachment.model.Attachment;
+import com.lukaszkolmer.jobsportal.attachment.services.AttachmentRepositoryImpl;
 import com.lukaszkolmer.jobsportal.user.model.User;
 import com.lukaszkolmer.jobsportal.user.services.UserRepositoryServices;
 import com.lukaszkolmer.jobsportal.userToUserMessage.model.UserToUserMessage;
@@ -24,14 +26,22 @@ public class UserToUserMessageController {
     UserRepositoryServices userRepositoryServices;
     @Autowired
     UserToUserMessageServices userToUserMessageServices;
-
+    @Autowired
+    AttachmentRepositoryImpl attachmentRepository;
 
     @GetMapping("/u2umessage")
     public String getUserToUserMessagePage(Model model, @RequestParam Long id) {
         User receiver = userRepositoryServices.findUserById(id);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User sender = userRepositoryServices.findByUsername(auth.getName());
-
+        if (attachmentRepository.findAttachmentOfUser(sender.getUsername())!=null)
+        {
+            Attachment attachment = attachmentRepository.findAttachmentOfUser(sender.getUsername());
+            model.addAttribute("attachment", attachment);
+        }
+        else {
+            model.addAttribute("attachment", null);
+        }
         model.addAttribute("userToUserMessage", new UserToUserMessage());
         model.addAttribute("sender", sender);
         model.addAttribute("receiver", receiver);
@@ -39,7 +49,7 @@ public class UserToUserMessageController {
     }
 
     @PostMapping("u2umessage")
-    public String postToUserToUserMessagePage(@RequestParam Long userid, @ModelAttribute(name = "userToUserMessage") UserToUserMessage userToUserMessage) {
+    public String postToUserToUserMessagePage(@RequestParam Long userid, @RequestParam(value = "attachmentCheckbox", required = false) String checkboxValue, @ModelAttribute(name = "userToUserMessage") UserToUserMessage userToUserMessage) {
         User receiver = userRepositoryServices.findUserById(userid);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User sender = userRepositoryServices.findByUsername(auth.getName());
@@ -49,6 +59,12 @@ public class UserToUserMessageController {
         userToUserMessage.setSender(sender.username);
         userToUserMessage.setReceiver(receiver.username);
 
+        if (checkboxValue == null){
+            userToUserMessage.setAttachmentLink(null);
+        }
+        else {
+            userToUserMessage.setAttachmentLink(attachmentRepository.findAttachmentOfUser(sender.getUsername()).getUrl());
+        }
         userToUserMessageServices.addNewUserToUserMessage(userToUserMessage);
 
         System.out.println(userToUserMessage);

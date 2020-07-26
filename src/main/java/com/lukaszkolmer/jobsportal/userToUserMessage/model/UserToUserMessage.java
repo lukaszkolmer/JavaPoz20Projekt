@@ -27,11 +27,12 @@ public class UserToUserMessage {
     LocalDate receivedDate = null;
     boolean alreadyRead = false;
 
-    public UserToUserMessage(String title, String message, String sender,String receiver) {
+    public UserToUserMessage(String title, String message, String sender,String receiver,String attachmentLink) {
             this.title = title;
             this.message = message;
             this.sender = sender;
             this.receiver = receiver;
+            this.attachmentLink = attachmentLink;
 
     }
 

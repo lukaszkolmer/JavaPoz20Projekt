@@ -40,6 +40,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests().antMatchers("/profile/**").hasAnyRole("USER", "ADMIN")
                 .and()
+                .authorizeRequests().antMatchers("/fileupload").hasAnyRole("USER", "ADMIN")
+                .and()
                 .authorizeRequests().antMatchers("/admindashboard").hasRole("ADMIN")
                 .and()
                 .formLogin().permitAll()

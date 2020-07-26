@@ -28,7 +28,7 @@ public class AWSS3Config {
         // Get AmazonS3 client and return the s3Client object.
         return AmazonS3ClientBuilder
                 .standard()
-                .withRegion(Regions.fromName(region))
+                .withRegion(Regions.EU_CENTRAL_1)
                 .withCredentials(new AWSStaticCredentialsProvider(basicAWSCredentials))
                 .build();
     }

@@ -1,5 +1,7 @@
 package com.lukaszkolmer.jobsportal.user.controller;
 
+import com.lukaszkolmer.jobsportal.attachment.model.Attachment;
+import com.lukaszkolmer.jobsportal.attachment.services.AttachmentRepositoryImpl;
 import com.lukaszkolmer.jobsportal.jobs.model.JobDetails;
 import com.lukaszkolmer.jobsportal.jobs.services.JobDetailsRepositoryServices;
 import com.lukaszkolmer.jobsportal.security.UserDetailsService;
@@ -7,30 +9,15 @@ import com.lukaszkolmer.jobsportal.user.model.User;
 import com.lukaszkolmer.jobsportal.user.services.UserRepositoryServices;
 import com.lukaszkolmer.jobsportal.userToUserMessage.model.UserToUserMessage;
 import com.lukaszkolmer.jobsportal.userToUserMessage.services.UserToUserMessageServices;
-import org.apache.tomcat.util.http.fileupload.FileUtils;
-import org.aspectj.util.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.*;
-import java.net.MalformedURLException;
-import java.net.URLConnection;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 @Controller
@@ -44,6 +31,8 @@ public class ProfileController {
     JobDetailsRepositoryServices jobDetailsRepository;
     @Autowired
     UserToUserMessageServices userToUserMessageServices;
+    @Autowired
+    AttachmentRepositoryImpl attachmentRepository;
 
     @GetMapping("/profile")
     public String getProfileSettings(Model model) {
@@ -173,14 +162,31 @@ public class ProfileController {
 
     @GetMapping("/profile/mailbox/outbox/{id}")
     public String getSentMessagePage(Model model, @PathVariable("id") Long id) {
+
         UserToUserMessage message = userToUserMessageServices.findUserToUserMessageById(id);
+        if (message.getAttachmentLink() != null) {
+            Attachment attachment = attachmentRepository.findAttachmentByUrl(message.getAttachmentLink());
+            model.addAttribute("attachment", attachment);
+        } else {
+            model.addAttribute("attachment", null);
+        }
+
         model.addAttribute("message", message);
         return "usertousermessageview";
     }
 
     @GetMapping("/profile/mailbox/inbox/{id}")
     public String getReceivedMessagePage(Model model, @PathVariable("id") Long id) {
+
         UserToUserMessage message = userToUserMessageServices.findUserToUserMessageById(id);
+        if (message.getAttachmentLink() != null) {
+            Attachment attachment = attachmentRepository.findAttachmentByUrl(message.getAttachmentLink());
+            model.addAttribute("attachment", attachment);
+        } else {
+            model.addAttribute("attachment", null);
+        }
+
+
         if (!message.isAlreadyRead()) {
             userToUserMessageServices.markMessageAsAlreadyRead(id);
         }
@@ -188,11 +194,21 @@ public class ProfileController {
         return "usertousermessageview";
     }
 
-    @GetMapping("/profile/mailbox/inbox/{id}/downloadatt")
-    public void downloadAttachmentFromInboxMessage(@PathVariable("id") Long id, @RequestParam("filename") String filename,
-                                                   HttpServletResponse response) throws IOException {
-        UserToUserMessage message = userToUserMessageServices.findUserToUserMessageById(id);
+    @GetMapping("/profile/uploadedcv")
+    public String getYourCVPage(Model model, RedirectAttributes redirectAttributes) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepository.findByUsername(auth.getName());
 
+        model.addAttribute("message", "");
 
+        if (attachmentRepository.findAttachmentOfUser(user.getUsername()) == null) {
+            redirectAttributes.addFlashAttribute("noAttachmentInfo", "No attachment uploaded");
+
+        }
+        if (attachmentRepository.findAttachmentOfUser(user.getUsername()) != null) {
+            Attachment attachment = attachmentRepository.findAttachmentOfUser(user.getUsername());
+            model.addAttribute("attachment", attachment);
+        }
+        return "uploadedcv";
     }
 }

@@ -13,11 +13,9 @@
 <label for="messagearea"><textarea id="messagearea" name="messagearea" th:text="${message.message}" style="height:250px; width:350px;"> message </textarea >
 </label>
 <br><br>
-<th:block th:if="${message.getFile() != null}">
-
-<p th:text="'Attachment: ' + ${message.file.getName()}">Attachment:</p><br>
-    <a th:href="@{'/profile/mailbox/inbox/'+${message.getId()} + '/downloadatt'(filename=${message.file.getName()})}">
-        <span th:text="${message.file.getName()}"></span></a>
+<th:block th:if="${attachment != null}">
+ <p>Attachment:</p><br>
+ <a th:href="${attachment.getUrl()}" th:text="${attachment.getName()}">Attachment:</a><br>
 
 </th:block>
 <br><br>

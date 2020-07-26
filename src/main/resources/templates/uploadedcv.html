@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your CV</title>
+</head>
+<body>
+<h1>Your CV:</h1>
+<th:block>
+   <span th:if="${attachment==null}" th:text="${noAttachmentInfo}">Info if no attachment </span><br><br>
+    <span th:if="${attachment==null}"><a href="/fileupload" ><button>Upload CV</button></a></span><br><br>
+    <span th:if="${attachment!=null}" th:text="${attachment.getName()}">Attachment name</span><br><br>
+    <span th:if="${attachment!=null}"> <a th:text="Dowload" th:href="${attachment.getUrl()}"> type="url">Attachment url</a></span><br><br>
+
+</th:block>
+<br><br>
+<a href="/profile" ><button>Back to profile</button></a><br>
+<a href="/" ><button>Home Page</button></a><br>
+</body>
+</html>

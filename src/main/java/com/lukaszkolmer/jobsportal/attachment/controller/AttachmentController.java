@@ -45,7 +45,7 @@ public class AttachmentController {
             return "redirect:/fileupload";
         }
         String fileUrl = s3Services.uploadFile(file);
-        Attachment attachment = new Attachment(file.getName(),fileUrl,uploader.getUsername());
+        Attachment attachment = new Attachment(file.getOriginalFilename(),fileUrl,uploader.getUsername());
         attachmentRepository.addNewAttachment(attachment);
 
         // return success response

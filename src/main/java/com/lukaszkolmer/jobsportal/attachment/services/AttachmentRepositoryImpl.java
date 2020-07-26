@@ -28,9 +28,11 @@ public class AttachmentRepositoryImpl {
     public Attachment findAttachmentById(Long id) {
         return attachmentRepository.findById(id).orElseThrow(() -> new NoAttachmentOfGivenID(id));
     }
-
-    public List<Attachment> findAllAttachmentsOfUser(String owner) {
-        return attachmentRepository.findAll().stream().filter(attachment -> attachment.getOwnerUsername().equals(owner)).collect(Collectors.toList());
+    public Attachment findAttachmentByUrl(String url) {
+        return attachmentRepository.findAll().stream().filter(attachment -> attachment.getUrl().equals(url)).findAny().orElse(null);
+    }
+    public Attachment findAttachmentOfUser(String owner) {
+        return attachmentRepository.findAll().stream().filter(attachment -> attachment.getOwnerUsername().equals(owner)).findAny().orElse(null);
     }
 
 

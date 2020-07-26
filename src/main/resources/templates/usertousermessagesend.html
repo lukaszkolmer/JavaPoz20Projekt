@@ -25,18 +25,21 @@
     <div class="form-group">
         <label class="col-md-4 control-label" for="message">Message</label>
         <div class="col-md-4">
-            <textarea th:field="${userToUserMessage.message}" class="form-control" id="message" name="message"></textarea>
+         <textarea th:field="${userToUserMessage.message}" class="form-control" id="message" name="message"></textarea>
+
         </div>
     </div>
 <br><br>
-    <!-- File Button -->
+    <!-- Attachment box -->
+    <span th:if="${attachment!=null}">
     <div class="form-group">
-        <label class="col-md-4 control-label" for="filebutton">File Button</label>
+        <label class="col-md-4 control-label" for="attCheckbox">File Button</label>
         <div class="col-md-4">
-            <input th:field="${userToUserMessage.file}" id="filebutton" name="filebutton" class="input-file" type="file">
+            <p>Add CV:</p>
+            <input type="checkbox" name="attachmentCheckbox" id="attCheckbox" />
         </div>
     </div>
-
+    </span>
     <!-- Button (Double) -->
     <div class="form-group">
         <label class="col-md-4 control-label" for="submitButton"></label>

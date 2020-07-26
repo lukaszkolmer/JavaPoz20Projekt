@@ -55,8 +55,7 @@ public class S3ServicesImpl {
 
 
     private void uploadFileTos3bucket(String fileName, File file) {
-        s3client.putObject(new PutObjectRequest(bucketName, fileName, file)
-                .withCannedAcl(CannedAccessControlList.PublicRead));
+        s3client.putObject(bucketName, fileName, file);
     }
 
     private File convertMultiPartToFile(MultipartFile file) throws IOException {
