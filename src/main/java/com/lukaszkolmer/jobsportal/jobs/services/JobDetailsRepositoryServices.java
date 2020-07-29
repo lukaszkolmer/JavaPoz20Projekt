@@ -26,18 +26,20 @@ public class JobDetailsRepositoryServices {
 
     @EventListener(ApplicationReadyEvent.class)
     public void setDatabase() {
-        JobDetails testJobDetails = new JobDetails("IT", "Test offer", "Test descritpion", "Test resposibilities", "Test qualifications",
-                "Test benefits", "Test location",
-                "Test 0 - 9001 salary", "Test vacancy",
-                LocalDate.of(2000, 1, 1), "Test job nature", "admin");
-        JobDetails testJobDetails2 = new JobDetails("Administration", "Test2 offer", "Test2 descritpion", "Test2 resposibilities", "Test2 qualifications",
-                "Test2 benefits", "Test2 location",
-                "Test2 0 - 9001 salary", "Test2 vacancy",
-                LocalDate.of(1995, 11, 11), "Test2 job nature", "admin");
-        JobDetails testJobDetails3 = new JobDetails("Teaching", "Test3 offer", "Test3 descritpion", "Test3 resposibilities", "Test3 qualifications",
-                "Test3 benefits", "Test3 location",
-                "Test3 0 - 9001 salary", "Test3 vacancy"
-                , LocalDate.of(1889, 12, 31), "Test3 job nature", "admin");
+        JobDetails testJobDetails = new JobDetails("IT", "Java junior developer", "We are looking for promising new Java devs to join our small team!", "- Working on high-volume, low-latency applications for mission-critical systems <br> - Writing well designed, testable, efficient code <br>" ,
+                "- Basic experience in Java <br> - Critical thinking and team player",
+                "-Private healthcare <br> - Relocation package", "Poznan",
+                "3000 - 4000", "1",
+                LocalDate.of(2020, 8, 15), "Full time", "admin");
+        JobDetails testJobDetails2 = new JobDetails("Administration", "Office manager needed.", "Looking for great and experienced office manager to manage our office.",
+                "- Managing office <br>- Visitors reception <br> - Taking care of the circulation of documents", "- Being organized  <br> - Good mannered and communicative person",
+                "Private, well equipped office", "Warsaw",
+                " 4500 - 7000", "1",
+                LocalDate.of(2020, 7, 19), "Full time", "admin");
+        JobDetails testJobDetails3 = new JobDetails("Cleaning", "Looking for cleaner!", "Looking for a person for cleaning my house 2 times a week.", "Complex cleaning of whole house in given time 2 times a week. ", "Good physical condition",
+                "Salary paid each week", "Poznan",
+                "To negotiation", "1"
+                , LocalDate.of(2020, 9, 1), "Part time", "user");
         jobDetailsRepository.save(testJobDetails);
         jobDetailsRepository.save(testJobDetails2);
         jobDetailsRepository.save(testJobDetails3);
